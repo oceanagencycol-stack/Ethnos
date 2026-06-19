@@ -51,10 +51,57 @@ tailwind.config={theme:{extend:{
   .d1{animation-delay:.15s}.d2{animation-delay:.35s}.d3{animation-delay:.55s}.d4{animation-delay:.75s}
   .art-card img{transition:transform .7s cubic-bezier(.16,1,.3,1)}
   .art-card:hover img{transform:scale(1.05)}
+  .region{cursor:pointer;transition:opacity .3s,transform .3s;transform-origin:center}
+  .region:hover{opacity:.82}
+  .region.active{stroke:#1B1B1B;stroke-width:3}
+  .map-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;pointer-events:none;text-transform:uppercase;letter-spacing:.05em}
+  .diaspora-btn.active{background:#A24B2A;color:#FBF8F1;border-color:#A24B2A}
+
+  /* ===== INTRO ANIMADA ===== */
+  #introOverlay{position:fixed;inset:0;z-index:9999;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;transition:opacity 1s cubic-bezier(.7,0,.3,1),visibility 1s}
+  #introOverlay.done{opacity:0;visibility:hidden;pointer-events:none}
+  #introCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+  .intro-grain{position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
+  .intro-content{position:relative;z-index:2;text-align:center;padding:0 24px}
+  .intro-logo-wrap{overflow:hidden;margin-bottom:40px}
+  .intro-logo{height:90px;width:auto;opacity:0;transform:translateY(40px) scale(.9);animation:introLogo 1.3s cubic-bezier(.16,1,.3,1) .2s forwards;filter:drop-shadow(0 8px 30px rgba(162,75,42,.4))}
+  @keyframes introLogo{to{opacity:1;transform:translateY(0) scale(1)}}
+  .intro-words{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-bottom:24px}
+  .intro-word{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,52px);font-weight:300;font-style:italic;opacity:0;transform:translateY(28px);filter:blur(8px)}
+  .intro-word:nth-child(1){color:#FBF8F1;animation:introWord .9s cubic-bezier(.16,1,.3,1) 1s forwards}
+  .intro-word:nth-child(2){color:#C2933D;animation:introWord .9s cubic-bezier(.16,1,.3,1) 1.35s forwards}
+  .intro-word:nth-child(3){color:#A24B2A;animation:introWord .9s cubic-bezier(.16,1,.3,1) 1.7s forwards}
+  @keyframes introWord{to{opacity:1;transform:translateY(0);filter:blur(0)}}
+  .intro-tagline{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:rgba(251,248,241,.5);opacity:0;animation:introFade 1s ease 2.3s forwards}
+  @keyframes introFade{to{opacity:1}}
+  .intro-progress{position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(251,248,241,.08);z-index:2}
+  .intro-progress-bar{display:block;height:100%;width:0;background:linear-gradient(90deg,#A24B2A,#C2933D);animation:introProg 3.4s cubic-bezier(.5,0,.2,1) forwards}
+  @keyframes introProg{to{width:100%}}
+  body.intro-active{overflow:hidden;height:100vh}
+  @media(prefers-reduced-motion:reduce){#introOverlay{display:none}}
   @media(prefers-reduced-motion:reduce){.reveal,.hero-rise{opacity:1!important;transform:none!important;animation:none}}
 </style>
 </head>
 <body>
+
+<!-- INTRO ANIMADA -->
+<div id="introOverlay">
+  <div class="intro-grain"></div>
+  <canvas id="introCanvas"></canvas>
+  <div class="intro-content">
+    <div class="intro-logo-wrap">
+      <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="intro-logo" alt="ETHNOS">
+    </div>
+    <div class="intro-words">
+      <span class="intro-word" data-d="0">Reconocimiento.</span>
+      <span class="intro-word" data-d="1">Justicia.</span>
+      <span class="intro-word" data-d="2">Desarrollo.</span>
+    </div>
+    <p class="intro-tagline">Pensamiento de la diáspora africana</p>
+  </div>
+  <div class="intro-progress"><span class="intro-progress-bar"></span></div>
+</div>
+
 
 <!-- NAVBAR -->
 <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-ink-900/6" id="navbar">
@@ -64,7 +111,9 @@ tailwind.config={theme:{extend:{
     </a>
     <div class="hidden lg:flex items-center gap-8">
       <a href="#articulos" class="nav-link">Artículos</a>
+      <a href="#noticias" class="nav-link">Noticias</a>
       <a href="#columnistas" class="nav-link">Columnistas</a>
+      <a href="#mapa" class="nav-link">África</a>
       <a href="#secciones" class="nav-link">Secciones</a>
       <a href="#nosotros" class="nav-link">Nosotros</a>
       <div class="flex items-center gap-1 ml-2">
@@ -83,7 +132,9 @@ tailwind.config={theme:{extend:{
 <div id="mobileMenu" class="fixed inset-0 z-40 bg-ivory-100/98 backdrop-blur-lg flex flex-col items-center justify-center gap-7 translate-x-full transition-transform duration-500">
   <button onclick="toggleMenu()" class="absolute top-7 right-7 text-ink-900"><i data-lucide="x" class="w-8 h-8"></i></button>
   <a href="#articulos" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Artículos</a>
+  <a href="#noticias" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Noticias</a>
   <a href="#columnistas" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Columnistas</a>
+  <a href="#mapa" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">África</a>
   <a href="#secciones" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Secciones</a>
   <a href="#nosotros" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Nosotros</a>
   <a href="#donar" onclick="toggleMenu()" class="btn-terra px-7 py-3 rounded-full mt-4">Apóyanos</a>
@@ -213,6 +264,69 @@ tailwind.config={theme:{extend:{
   </div>
 </section>
 
+<!-- NOTICIAS DE ACTUALIDAD -->
+<section class="px-6 lg:px-12 py-24 bg-ink-900 text-ivory-100" id="noticias">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-5 mb-14">
+      <div>
+        <div class="flex items-center gap-4 mb-5"><span class="w-2.5 h-2.5 rounded-full bg-ocre-300"></span><span class="eyebrow" style="color:#D4A95A">Actualidad</span></div>
+        <h2 class="font-display font-light text-4xl md:text-5xl leading-tight">Noticias de la diáspora</h2>
+      </div>
+      <p class="text-ivory-100/60 font-light max-w-sm">Lo que está pasando en el mundo afrodescendiente, actualizado por nuestro equipo y columnistas.</p>
+    </div>
+
+    <div id="newsGrid" class="grid lg:grid-cols-2 gap-6">
+      <!-- Noticia 1 (destacada) -->
+      <a href="#" class="reveal group block lg:row-span-2 rounded-2xl overflow-hidden bg-ink-800 border border-ivory-100/8 hover:border-ocre-300/30 transition-colors">
+        <div class="h-56 lg:h-72 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903309/ChatGPT_Image_19_jun_2026_15_17_04_ih1xgn.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt=""></div>
+        <div class="p-8">
+          <div class="flex items-center gap-3 mb-4"><span class="px-3 py-1 rounded-full bg-ocre-300/15 text-ocre-300 text-xs font-mono uppercase tracking-wider">ONU</span><span class="font-mono text-xs text-ivory-100/40">2025–2034</span></div>
+          <h3 class="font-display text-2xl md:text-3xl leading-tight mb-3 group-hover:text-ocre-300 transition-colors">Comienza el Segundo Decenio Internacional de los Afrodescendientes</h3>
+          <p class="text-ivory-100/60 font-light leading-relaxed">La Asamblea General de la ONU proclamó el Segundo Decenio (2025–2034) bajo el lema "reconocimiento, justicia y desarrollo", una iniciativa liderada por un grupo que incluye a Colombia, Brasil y Jamaica para enfrentar los legados de la esclavitud y el colonialismo.</p>
+        </div>
+      </a>
+      <!-- Noticia 2 -->
+      <a href="#" class="reveal group block rounded-2xl overflow-hidden bg-ink-800 border border-ivory-100/8 hover:border-ocre-300/30 transition-colors">
+        <div class="flex gap-5 p-5">
+          <div class="w-28 h-28 rounded-xl overflow-hidden shrink-0"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903308/ChatGPT_Image_19_jun_2026_15_15_01_wiwzzn.png" class="w-full h-full object-cover" alt=""></div>
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-ocre-300">Poder global</span>
+            <h3 class="font-display text-lg leading-snug mt-2 mb-2 group-hover:text-ocre-300 transition-colors">La diáspora africana, un poder de 1.350 millones de personas</h3>
+            <p class="text-ivory-100/50 font-light text-sm">Líderes de tres continentes se reunieron para articular el peso económico y político de la comunidad afrodescendiente mundial.</p>
+          </div>
+        </div>
+      </a>
+      <!-- Noticia 3 -->
+      <a href="#" class="reveal group block rounded-2xl overflow-hidden bg-ink-800 border border-ivory-100/8 hover:border-ocre-300/30 transition-colors">
+        <div class="flex gap-5 p-5">
+          <div class="w-28 h-28 rounded-xl overflow-hidden shrink-0"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903313/ChatGPT_Image_19_jun_2026_15_12_51_jp7tbq.png" class="w-full h-full object-cover" alt=""></div>
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-ocre-300">Memoria</span>
+            <h3 class="font-display text-lg leading-snug mt-2 mb-2 group-hover:text-ocre-300 transition-colors">25 de marzo: Día de las Víctimas de la Esclavitud</h3>
+            <p class="text-ivory-100/50 font-light text-sm">La conmemoración internacional renueva el llamado a la justicia restaurativa frente a la trata transatlántica.</p>
+          </div>
+        </div>
+      </a>
+      <!-- Noticia 4 -->
+      <a href="#" class="reveal group block rounded-2xl overflow-hidden bg-ink-800 border border-ivory-100/8 hover:border-ocre-300/30 transition-colors">
+        <div class="flex gap-5 p-5">
+          <div class="w-28 h-28 rounded-xl overflow-hidden shrink-0"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903306/ChatGPT_Image_19_jun_2026_16_01_49_h4zd45.png" class="w-full h-full object-cover" alt=""></div>
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-wider text-ocre-300">Cultura</span>
+            <h3 class="font-display text-lg leading-snug mt-2 mb-2 group-hover:text-ocre-300 transition-colors">Día Mundial de la Cultura Africana y Afrodescendiente</h3>
+            <p class="text-ivory-100/50 font-light text-sm">El patrimonio cultural africano se reconoce como parte esencial de la identidad de decenas de países en el mundo.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="reveal mt-10 flex items-center justify-between">
+      <p class="font-mono text-xs text-ivory-100/40">Las noticias se actualizan por el equipo editorial y columnistas aprobados.</p>
+      <a href="#" class="text-ocre-300 font-medium text-sm inline-flex items-center gap-2 hover:gap-4 transition-all">Ver todas las noticias <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+  </div>
+</section>
+
 <!-- COLUMNISTAS -->
 <section class="px-6 lg:px-12 py-24 bg-ivory-200" id="columnistas">
   <div class="max-w-[1400px] mx-auto">
@@ -264,7 +378,7 @@ tailwind.config={theme:{extend:{
       </div>
       <div class="reveal group text-center">
         <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
-          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903306/ChatGPT_Image_19_jun_2026_16_01_49_h4zd45.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Romero Rodríguez">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898785/ChatGPT_Image_19_jun_2026_14_34_19_pb2fsr.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Romero Rodríguez">
           <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
         </div>
         <h3 class="font-display text-lg leading-tight">Romero Rodríguez</h3>
@@ -351,6 +465,58 @@ tailwind.config={theme:{extend:{
   </div>
 </section>
 
+<!-- MAPA INTERACTIVO DE ÁFRICA Y LA DIÁSPORA -->
+<section class="px-6 lg:px-12 py-24 bg-ivory-200" id="mapa">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal text-center mb-14 max-w-2xl mx-auto">
+      <div class="flex items-center justify-center gap-4 mb-5"><span class="terra-line w-12"></span><span class="eyebrow">Raíces y rutas</span><span class="terra-line w-12"></span></div>
+      <h2 class="font-display font-light text-4xl md:text-5xl leading-tight mb-5">África y su diáspora</h2>
+      <p class="text-ink-500 font-light text-lg">Explora las regiones del continente y las rutas de la diáspora africana. Toca cada región para conocer su historia.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <!-- Mapa SVG -->
+      <div class="reveal">
+        <svg viewBox="0 0 400 440" class="w-full max-w-md mx-auto" id="africaMap">
+          <!-- Norte de África -->
+          <path class="region" data-region="norte" d="M120,60 L280,60 L300,110 L260,130 L180,125 L120,110 Z" fill="#C2933D" stroke="#FBF8F1" stroke-width="2"/>
+          <!-- África Occidental -->
+          <path class="region" data-region="occidental" d="M120,110 L180,125 L185,180 L150,210 L100,195 L90,140 Z" fill="#A24B2A" stroke="#FBF8F1" stroke-width="2"/>
+          <!-- África Central -->
+          <path class="region" data-region="central" d="M180,125 L260,130 L270,200 L220,230 L185,180 Z" fill="#7A4A35" stroke="#FBF8F1" stroke-width="2"/>
+          <!-- África Oriental -->
+          <path class="region" data-region="oriental" d="M260,130 L300,110 L320,180 L300,250 L270,200 Z" fill="#C45A2E" stroke="#FBF8F1" stroke-width="2"/>
+          <!-- África Austral -->
+          <path class="region" data-region="austral" d="M185,180 L220,230 L270,200 L300,250 L260,330 L200,340 L160,270 L150,210 Z" fill="#83391F" stroke="#FBF8F1" stroke-width="2"/>
+          <!-- Etiquetas -->
+          <text x="200" y="92" text-anchor="middle" class="map-label" fill="#FBF8F1">Norte</text>
+          <text x="135" y="165" text-anchor="middle" class="map-label" fill="#FBF8F1">Occidental</text>
+          <text x="222" y="180" text-anchor="middle" class="map-label" fill="#FBF8F1">Central</text>
+          <text x="290" y="185" text-anchor="middle" class="map-label" fill="#FBF8F1">Oriental</text>
+          <text x="215" y="285" text-anchor="middle" class="map-label" fill="#FBF8F1">Austral</text>
+        </svg>
+        <!-- Rutas de la diáspora -->
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-6">
+          <button class="diaspora-btn px-4 py-2 rounded-full text-xs font-mono border border-ink-900/15 hover:border-terra-500 hover:text-terra-500 transition-colors" data-region="caribe">Caribe</button>
+          <button class="diaspora-btn px-4 py-2 rounded-full text-xs font-mono border border-ink-900/15 hover:border-terra-500 hover:text-terra-500 transition-colors" data-region="brasil">Brasil</button>
+          <button class="diaspora-btn px-4 py-2 rounded-full text-xs font-mono border border-ink-900/15 hover:border-terra-500 hover:text-terra-500 transition-colors" data-region="colombia">Pacífico colombiano</button>
+          <button class="diaspora-btn px-4 py-2 rounded-full text-xs font-mono border border-ink-900/15 hover:border-terra-500 hover:text-terra-500 transition-colors" data-region="eeuu">Estados Unidos</button>
+        </div>
+      </div>
+
+      <!-- Panel de información -->
+      <div class="reveal">
+        <div id="mapInfo" class="bg-white rounded-3xl p-9 border border-ink-900/8 min-h-[340px]">
+          <span class="eyebrow" id="miEyebrow">Toca una región</span>
+          <h3 class="font-display text-3xl mt-4 mb-5" id="miTitle">El origen de todo</h3>
+          <p class="text-ink-500 font-light leading-relaxed mb-6" id="miText">África es la cuna de la humanidad y el origen de una de las culturas más ricas y diversas del planeta. Su historia, sus reinos y su gente se extendieron por el mundo a través de la diáspora. Toca cada región del mapa o una ruta de la diáspora para conocer su historia.</p>
+          <div id="miStats" class="flex gap-8"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- APOYO / DONAR -->
 <section class="px-6 lg:px-12 py-24" id="donar">
   <div class="max-w-[1100px] mx-auto">
@@ -402,12 +568,125 @@ tailwind.config={theme:{extend:{
 
 <script>
 lucide.createIcons();
+
+// ===== INTRO ANIMADA: red de conexiones (rutas de la diáspora) =====
+(function(){
+  const overlay=document.getElementById('introOverlay');
+  if(!overlay) return;
+  document.body.classList.add('intro-active');
+  const canvas=document.getElementById('introCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[],raf;
+  function size(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  size();
+  // Crear puntos (nodos de la red)
+  const N=Math.min(70,Math.floor(W/22));
+  for(let i=0;i<N;i++){
+    pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.8+.6});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // líneas entre puntos cercanos
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.strokeStyle='rgba(194,147,61,'+(1-d/140)*.4+')';
+          ctx.lineWidth=.6;
+          ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();
+        }
+      }
+    }
+    // puntos
+    for(const p of pts){
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.fillStyle='rgba(162,75,42,.8)';
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener('resize',size);
+  // Cerrar la intro
+  function endIntro(){
+    overlay.classList.add('done');
+    document.body.classList.remove('intro-active');
+    setTimeout(()=>{cancelAnimationFrame(raf);overlay.remove();},1100);
+  }
+  // Auto cerrar a los 3.4s, o al hacer clic/scroll
+  const t=setTimeout(endIntro,3400);
+  overlay.addEventListener('click',()=>{clearTimeout(t);endIntro();});
+})();
+
+
 function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.transform=m.style.transform==='translateX(0%)'?'translateX(100%)':'translateX(0%)';}
 // Selector de idioma (visual por ahora; conectaremos i18n en sprint futuro)
 document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
 }));
+
+// ===== MAPA INTERACTIVO DE ÁFRICA Y LA DIÁSPORA =====
+const mapData = {
+  norte: { eyebrow:'África del Norte', title:'Encrucijada de civilizaciones',
+    text:'Hogar del antiguo Egipto y de las civilizaciones del Magreb. Durante siglos fue un puente entre África, el Mediterráneo y el mundo árabe. Aquí florecieron centros de conocimiento como Alejandría y, más tarde, las universidades de Fez y El Cairo.',
+    stats:[['~7','grandes reinos'],['3000+','años de historia escrita']] },
+  occidental: { eyebrow:'África Occidental', title:'Los grandes imperios del oro',
+    text:'Cuna de los imperios de Ghana, Malí y Songhai, que controlaron las rutas del oro y la sal. Tombuctú fue uno de los mayores centros intelectuales del mundo medieval. De esta región provino la mayor parte de las personas esclavizadas llevadas a las Américas.',
+    stats:[['3','grandes imperios'],['Tombuctú','centro del saber']] },
+  central: { eyebrow:'África Central',  title:'Selva, reinos y resistencia',
+    text:'Tierra del Reino del Congo y de pueblos con profundas tradiciones espirituales y artísticas. La cuenca del Congo, una de las más biodiversas del planeta, fue también escenario de una brutal explotación colonial cuya memoria sigue viva.',
+    stats:[['Reino','del Congo'],['2°','pulmón del planeta']] },
+  oriental: { eyebrow:'África Oriental', title:'La cuna de la humanidad',
+    text:'Aquí, en el Valle del Rift, se encontraron los restos humanos más antiguos conocidos. Fue centro de las rutas comerciales del Índico y de la cultura swahili, que conectó África con Arabia, India y China mucho antes de la llegada europea.',
+    stats:[['Cuna','de la humanidad'],['Swahili','cultura comercial']] },
+  austral: { eyebrow:'África Austral', title:'Del Gran Zimbabue al apartheid',
+    text:'Hogar del Gran Zimbabue, una de las civilizaciones de piedra más impresionantes de su época. Siglos después, fue escenario de la lucha contra el apartheid, símbolo mundial de la resistencia afrodescendiente liderada por figuras como Nelson Mandela.',
+    stats:[['Gran','Zimbabue'],['1994','fin del apartheid']] },
+  // Diáspora
+  caribe: { eyebrow:'Diáspora · Caribe', title:'La primera Haití libre',
+    text:'El Caribe recibió a millones de africanos esclavizados. En 1804, Haití se convirtió en la primera república negra libre del mundo tras derrotar al ejército de Napoleón: la única revolución de personas esclavizadas que fundó un Estado. Su legado panafricanista sigue inspirando al mundo.',
+    stats:[['1804','Haití libre'],['1ª','república negra']] },
+  brasil: { eyebrow:'Diáspora · Brasil', title:'La mayor población afro fuera de África',
+    text:'Brasil recibió cerca del 40% de todas las personas esclavizadas que cruzaron el Atlántico. Hoy es el país con más afrodescendientes fuera de África. De los quilombos (territorios de libertad) surgió Palmares, símbolo de resistencia liderado por Zumbi.',
+    stats:[['~40%','de la trata'],['Palmares','quilombo libre']] },
+  colombia: { eyebrow:'Diáspora · Pacífico colombiano', title:'Territorios de libertad y resistencia',
+    text:'El Pacífico colombiano es uno de los corazones de la cultura afrodescendiente en América. De los palenques —pueblos de cimarrones libres— nació San Basilio de Palenque, el primer pueblo libre de América, reconocido por la UNESCO. La Ley 70 de 1993 reconoció sus derechos territoriales.',
+    stats:[['Palenque','1er pueblo libre'],['Ley 70','derechos étnicos']] },
+  eeuu: { eyebrow:'Diáspora · Estados Unidos', title:'Del esclavismo a los derechos civiles',
+    text:'La población afroamericana transformó la historia de Estados Unidos: de la esclavitud y la segregación al movimiento por los derechos civiles liderado por figuras como Martin Luther King. Su cultura —del jazz al hip-hop— redefinió la cultura mundial.',
+    stats:[['1865','abolición'],['1964','derechos civiles']] }
+};
+
+function showMapInfo(region){
+  const d = mapData[region]; if(!d) return;
+  document.getElementById('miEyebrow').textContent = d.eyebrow;
+  document.getElementById('miTitle').textContent = d.title;
+  document.getElementById('miText').textContent = d.text;
+  document.getElementById('miStats').innerHTML = d.stats.map(s=>
+    `<div><p class="font-display text-2xl text-terra-500">${s[0]}</p><p class="font-mono text-[10px] uppercase tracking-wider text-ink-500 mt-1">${s[1]}</p></div>`
+  ).join('');
+}
+document.querySelectorAll('.region').forEach(r=>{
+  r.addEventListener('click',()=>{
+    document.querySelectorAll('.region').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.diaspora-btn').forEach(x=>x.classList.remove('active'));
+    r.classList.add('active');
+    showMapInfo(r.dataset.region);
+  });
+});
+document.querySelectorAll('.diaspora-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.region').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.diaspora-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    showMapInfo(b.dataset.region);
+  });
+});
+
 // Reveal on scroll
 const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
