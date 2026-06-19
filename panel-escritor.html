@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel del columnista — ETHNOS</title>
+<link rel="icon" href="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['Inter','sans-serif'],mono:['"Space Mono"','monospace']},colors:{terra:{400:'#C45A2E',500:'#A24B2A',600:'#83391F'},ocre:{300:'#D4A95A',400:'#C2933D'},ivory:{100:'#FBF8F1',200:'#F5F1EA'},ink:{900:'#1B1B1B',800:'#262626',700:'#3A3A3A',500:'#6B6B6B'}}}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#FBF8F1;color:#1B1B1B}
+  .font-display{font-family:'Fraunces',serif}.font-mono{font-family:'Space Mono',monospace}
+  .inp{width:100%;padding:11px 15px;border:1.5px solid rgba(27,27,27,.12);border-radius:10px;font-size:15px;outline:none;background:#fff;transition:border-color .2s}
+  .inp:focus{border-color:#A24B2A}
+  .btn-terra{background:#A24B2A;color:#FBF8F1;font-weight:600;transition:transform .3s}.btn-terra:hover{transform:translateY(-2px)}
+  .btn-ghost{border:1.5px solid rgba(27,27,27,.15);color:#3A3A3A;transition:all .2s}.btn-ghost:hover{border-color:#A24B2A;color:#A24B2A}
+  .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  .tab{padding:10px 18px;border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;color:#6B6B6B}
+  .tab.active{background:#1B1B1B;color:#FBF8F1}
+  .toolbar button{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#3A3A3A;transition:all .15s}
+  .toolbar button:hover{background:#F5F1EA;color:#A24B2A}
+  #editor{min-height:280px;padding:18px;border:1.5px solid rgba(27,27,27,.12);border-radius:0 0 12px 12px;border-top:none;outline:none;background:#fff;line-height:1.7;font-weight:300}
+  #editor:focus{border-color:#A24B2A}
+  #editor h2{font-family:'Fraunces',serif;font-size:1.5rem;margin:1.3rem 0 .7rem}
+  #editor p{margin-bottom:.9rem}#editor ul{margin:0 0 .9rem 1.4rem;list-style:disc}#editor strong{color:#A24B2A}
+  #editor:empty:before{content:attr(data-ph);color:rgba(27,27,27,.3)}
+  .modal{position:fixed;inset:0;background:rgba(27,27,27,.6);backdrop-filter:blur(5px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:30px;overflow-y:auto}
+  .modal.open{display:flex}
+  .badge{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;font-family:'Space Mono',monospace}
+  .b-pending{background:#C2933D22;color:#83391F}.b-approved{background:#2D6A4F22;color:#1B4332}.b-rejected{background:#A24B2A22;color:#83391F}.b-draft{background:#6B6B6B22;color:#3A3A3A}
+</style>
+</head>
+<body>
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-ink-900/8">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-3"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-9" alt="ETHNOS"><span class="font-mono text-xs text-ink-500 hidden sm:block">Columnista</span></div>
+    <div class="flex items-center gap-4">
+      <a href="index.html" target="_blank" class="btn-ghost px-4 py-2 rounded-lg text-sm inline-flex items-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i><span class="hidden sm:inline">Ver sitio</span></a>
+      <button onclick="signOut()" class="text-ink-500 hover:text-terra-600 transition-colors text-sm inline-flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i><span class="hidden sm:inline">Salir</span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- Aviso de estado pendiente -->
+<div id="pendingBanner" class="hidden bg-ocre-400/15 border-b border-ocre-400/30">
+  <div class="max-w-6xl mx-auto px-6 py-3 flex items-center gap-3 text-sm text-ink-900">
+    <i data-lucide="clock" class="w-4 h-4 text-ocre-400"></i>
+    <span>Tu cuenta de columnista está en revisión. Podrás publicar cuando el equipo editorial la apruebe.</span>
+  </div>
+</div>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="font-display text-3xl mb-1">Hola, <span id="writerName">columnista</span></h1>
+      <p class="text-ink-500 text-sm">Crea y gestiona tus artículos y noticias.</p>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="openEditor('article')" id="btnNewArt" class="btn-terra px-5 py-3 rounded-xl inline-flex items-center gap-2"><i data-lucide="pen-line" class="w-5 h-5"></i>Nuevo artículo</button>
+      <button onclick="openEditor('news')" id="btnNewNews" class="btn-ghost px-5 py-3 rounded-xl inline-flex items-center gap-2"><i data-lucide="newspaper" class="w-5 h-5"></i>Nueva noticia</button>
+    </div>
+  </div>
+
+  <div class="flex gap-2 mb-8">
+    <div class="tab active" onclick="switchTab('articles',this)">Mis artículos</div>
+    <div class="tab" onclick="switchTab('news',this)">Mis noticias</div>
+  </div>
+
+  <div id="loading" class="text-center py-16"><span class="inline-block w-9 h-9 border-2 border-terra-500 border-t-transparent rounded-full spin"></span></div>
+  <div id="list" class="space-y-4"></div>
+  <div id="empty" style="display:none" class="text-center py-16 text-ink-500">
+    <p class="mb-5">Aún no tienes publicaciones aquí.</p>
+  </div>
+</div>
+
+<!-- MODAL EDITOR -->
+<div class="modal" id="editorModal">
+  <div class="w-full max-w-3xl bg-white rounded-2xl p-7 my-4">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="font-display text-2xl" id="modalTitle">Nuevo artículo</h2>
+      <button onclick="closeEditor()" class="text-ink-500 hover:text-ink-900"><i data-lucide="x" class="w-6 h-6"></i></button>
+    </div>
+    <input type="hidden" id="itemId"><input type="hidden" id="itemType">
+    <div class="space-y-5">
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Título</label><input type="text" id="fTitle" class="inp" placeholder="El título de tu publicación"></div>
+      <div id="subtitleWrap"><label class="text-sm text-ink-500 mb-1.5 block">Subtítulo / resumen</label><input type="text" id="fSubtitle" class="inp" placeholder="Una frase que resuma la idea"></div>
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Categoría</label><input type="text" id="fCategory" class="inp" placeholder="Ej: Política, Territorio, Historia..."></div>
+
+      <!-- Imagen -->
+      <div>
+        <label class="text-sm text-ink-500 mb-1.5 block">Imagen de portada</label>
+        <div class="flex gap-2 mb-3">
+          <button type="button" onclick="imgMode('link')" id="tabLink" class="px-4 py-2 rounded-lg text-sm btn-terra">Pegar enlace</button>
+          <button type="button" onclick="imgMode('upload')" id="tabUpload" class="px-4 py-2 rounded-lg text-sm btn-ghost">Subir imagen</button>
+        </div>
+        <input type="text" id="fImageUrl" class="inp" placeholder="https://..." oninput="previewImg()">
+        <input type="file" id="fImageFile" accept="image/*" class="inp hidden" onchange="uploadImg()">
+        <p class="text-ink-500 text-xs mt-2" id="imgHint">Pega el enlace de una imagen.</p>
+        <img id="imgPreview" class="hidden mt-3 rounded-xl w-full aspect-[16/9] object-cover" alt="">
+      </div>
+
+      <!-- Editor (solo artículos) -->
+      <div id="contentWrap">
+        <label class="text-sm text-ink-500 mb-1.5 block">Contenido</label>
+        <div class="toolbar flex items-center gap-1 p-2 bg-ivory-200 rounded-t-xl border border-ink-900/12">
+          <button type="button" onmousedown="event.preventDefault()" onclick="fmt('bold')" title="Negrita"><i data-lucide="bold" class="w-4 h-4"></i></button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="fmt('italic')" title="Cursiva"><i data-lucide="italic" class="w-4 h-4"></i></button>
+          <div class="w-px h-6 bg-ink-900/12 mx-1"></div>
+          <button type="button" onmousedown="event.preventDefault()" onclick="fmtBlock('h2')" title="Subtítulo"><i data-lucide="heading-2" class="w-4 h-4"></i></button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="fmtBlock('p')" title="Párrafo"><i data-lucide="pilcrow" class="w-4 h-4"></i></button>
+          <div class="w-px h-6 bg-ink-900/12 mx-1"></div>
+          <button type="button" onmousedown="event.preventDefault()" onclick="fmt('insertUnorderedList')" title="Lista"><i data-lucide="list" class="w-4 h-4"></i></button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="fmtQuote()" title="Cita"><i data-lucide="quote" class="w-4 h-4"></i></button>
+        </div>
+        <div id="editor" contenteditable="true" data-ph="Escribe aquí. Usa los botones para dar formato..."></div>
+      </div>
+      <!-- Resumen (solo noticias) -->
+      <div id="summaryWrap" class="hidden">
+        <label class="text-sm text-ink-500 mb-1.5 block">Resumen de la noticia</label>
+        <textarea id="fSummary" class="inp" rows="4" placeholder="Resume la noticia en pocas líneas"></textarea>
+        <label class="text-sm text-ink-500 mb-1.5 block mt-4">Enlace a la fuente (opcional)</label>
+        <input type="text" id="fSource" class="inp" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 mt-8 pt-6 border-t border-ink-900/10">
+      <button onclick="deleteItem()" id="btnDelete" class="text-terra-600 hover:bg-terra-600/10 px-4 py-2.5 rounded-lg text-sm inline-flex items-center gap-2" style="display:none"><i data-lucide="trash-2" class="w-4 h-4"></i>Eliminar</button>
+      <div class="flex items-center gap-3 ml-auto">
+        <button onclick="closeEditor()" class="btn-ghost px-5 py-2.5 rounded-lg text-sm">Cancelar</button>
+        <button onclick="saveItem()" id="btnSave" class="btn-terra px-6 py-2.5 rounded-lg text-sm inline-flex items-center gap-2"><i data-lucide="send" class="w-4 h-4"></i>Enviar a revisión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
+<script>
+lucide.createIcons();
+let me=null, currentTab='articles', canPublish=false;
+
+(async()=>{
+  me=await requireRole(['escritor','super_admin']);
+  if(!me) return;
+  document.getElementById('writerName').textContent=(me.full_name||'columnista').split(' ')[0];
+  canPublish = me.role==='super_admin' || (me.role==='escritor' && me.writer_status==='approved');
+  if(!canPublish){
+    document.getElementById('pendingBanner').classList.remove('hidden');
+    document.getElementById('btnNewArt').disabled=true; document.getElementById('btnNewArt').style.opacity='.5';
+    document.getElementById('btnNewNews').disabled=true; document.getElementById('btnNewNews').style.opacity='.5';
+  }
+  lucide.createIcons();
+  loadList();
+})();
+
+function switchTab(tab,el){
+  currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  loadList();
+}
+
+async function loadList(){
+  document.getElementById('loading').style.display='block';
+  document.getElementById('list').innerHTML='';
+  document.getElementById('empty').style.display='none';
+  const table = currentTab==='articles' ? 'articles' : 'news';
+  const { data, error }=await sb.from(table).select('*').eq('author_id',me.id).order('created_at',{ascending:false});
+  document.getElementById('loading').style.display='none';
+  const items=data||[];
+  if(!items.length){ document.getElementById('empty').style.display='block'; return; }
+  const badgeMap={pending:['b-pending','En revisión'],approved:['b-approved','Aprobado'],rejected:['b-rejected','Rechazado'],draft:['b-draft','Borrador']};
+  document.getElementById('list').innerHTML=items.map(it=>{
+    const b=badgeMap[it.status]||badgeMap.draft;
+    return `<div class="bg-white rounded-2xl border border-ink-900/8 p-5 flex items-center gap-5">
+      <div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-ivory-200">${it.image_url?`<img src="${it.image_url}" class="w-full h-full object-cover">`:''}</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1"><span class="badge ${b[0]}">${b[1]}</span><span class="font-mono text-[10px] text-ink-500 uppercase">${it.category||''}</span></div>
+        <h3 class="font-display text-lg leading-snug truncate">${it.title}</h3>
+      </div>
+      <button onclick='editItem(${JSON.stringify(JSON.stringify(it))})' class="btn-ghost px-4 py-2 rounded-lg text-sm inline-flex items-center gap-1.5 shrink-0"><i data-lucide="pencil" class="w-3.5 h-3.5"></i>Editar</button>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+
+// Imagen
+function imgMode(mode){
+  const link=document.getElementById('fImageUrl'),file=document.getElementById('fImageFile');
+  const tl=document.getElementById('tabLink'),tu=document.getElementById('tabUpload');
+  if(mode==='link'){link.classList.remove('hidden');file.classList.add('hidden');tl.className='px-4 py-2 rounded-lg text-sm btn-terra';tu.className='px-4 py-2 rounded-lg text-sm btn-ghost';document.getElementById('imgHint').textContent='Pega el enlace de una imagen.';}
+  else{link.classList.add('hidden');file.classList.remove('hidden');tl.className='px-4 py-2 rounded-lg text-sm btn-ghost';tu.className='px-4 py-2 rounded-lg text-sm btn-terra';document.getElementById('imgHint').textContent='Sube una imagen desde tu dispositivo.';}
+}
+function previewImg(){const u=document.getElementById('fImageUrl').value.trim();const p=document.getElementById('imgPreview');if(u){p.src=u;p.classList.remove('hidden');}else p.classList.add('hidden');}
+async function uploadImg(){
+  const file=document.getElementById('fImageFile').files[0]; if(!file)return;
+  toast('Subiendo imagen...');
+  const ext=file.name.split('.').pop();
+  const path='ethnos/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+  const { error }=await sb.storage.from('imagenes').upload(path,file,{upsert:true});
+  if(error){ toast('Error al subir: '+error.message,false); return; }
+  const { data }=sb.storage.from('imagenes').getPublicUrl(path);
+  document.getElementById('fImageUrl').value=data.publicUrl; previewImg(); toast('Imagen subida');
+}
+
+// Editor
+function fmt(c){document.execCommand(c,false,null);document.getElementById('editor').focus();}
+function fmtBlock(t){document.execCommand('formatBlock',false,t);document.getElementById('editor').focus();}
+function fmtQuote(){document.execCommand('formatBlock',false,'blockquote');document.getElementById('editor').focus();}
+
+function openEditor(type){
+  if(!canPublish){ toast('Tu cuenta aún está en revisión',false); return; }
+  document.getElementById('itemType').value=type;
+  document.getElementById('itemId').value='';
+  document.getElementById('modalTitle').textContent = type==='article'?'Nuevo artículo':'Nueva noticia';
+  document.getElementById('fTitle').value='';document.getElementById('fSubtitle').value='';
+  document.getElementById('fCategory').value='';document.getElementById('fImageUrl').value='';
+  document.getElementById('editor').innerHTML='';document.getElementById('imgPreview').classList.add('hidden');
+  if(document.getElementById('fSummary'))document.getElementById('fSummary').value='';
+  if(document.getElementById('fSource'))document.getElementById('fSource').value='';
+  document.getElementById('btnDelete').style.display='none';
+  document.getElementById('contentWrap').classList.toggle('hidden',type!=='article');
+  document.getElementById('subtitleWrap').classList.toggle('hidden',type!=='article');
+  document.getElementById('summaryWrap').classList.toggle('hidden',type!=='news');
+  imgMode('link');
+  document.getElementById('editorModal').classList.add('open');
+}
+function closeEditor(){document.getElementById('editorModal').classList.remove('open');}
+
+function editItem(jsonStr){
+  const it=JSON.parse(JSON.parse(jsonStr));
+  const type=currentTab==='articles'?'article':'news';
+  document.getElementById('itemType').value=type;
+  document.getElementById('itemId').value=it.id;
+  document.getElementById('modalTitle').textContent='Editar';
+  document.getElementById('fTitle').value=it.title||'';
+  document.getElementById('fSubtitle').value=it.subtitle||'';
+  document.getElementById('fCategory').value=it.category||'';
+  document.getElementById('fImageUrl').value=it.image_url||'';
+  if(type==='article'){document.getElementById('editor').innerHTML=it.content||'';}
+  else{document.getElementById('fSummary').value=it.summary||'';document.getElementById('fSource').value=it.source_url||'';}
+  document.getElementById('btnDelete').style.display='inline-flex';
+  document.getElementById('contentWrap').classList.toggle('hidden',type!=='article');
+  document.getElementById('subtitleWrap').classList.toggle('hidden',type!=='article');
+  document.getElementById('summaryWrap').classList.toggle('hidden',type!=='news');
+  imgMode('link'); previewImg();
+  document.getElementById('editorModal').classList.add('open');
+}
+
+async function saveItem(){
+  const title=document.getElementById('fTitle').value.trim();
+  if(!title){ toast('Ponle un título',false); return; }
+  const type=document.getElementById('itemType').value;
+  const id=document.getElementById('itemId').value;
+  const btn=document.getElementById('btnSave'); btn.disabled=true; btn.innerHTML='<span class="inline-block w-4 h-4 border-2 border-ivory-100 border-t-transparent rounded-full spin"></span>';
+
+  let payload, table;
+  if(type==='article'){
+    table='articles';
+    payload={ title, subtitle:document.getElementById('fSubtitle').value.trim(),
+      excerpt:document.getElementById('fSubtitle').value.trim(),
+      category:document.getElementById('fCategory').value.trim(),
+      content:document.getElementById('editor').innerHTML,
+      image_url:document.getElementById('fImageUrl').value.trim(),
+      author_id:me.id, author_name:me.full_name,
+      status:'pending', published:false, updated_at:new Date().toISOString() };
+  }else{
+    table='news';
+    payload={ title, summary:document.getElementById('fSummary').value.trim(),
+      category:document.getElementById('fCategory').value.trim(),
+      image_url:document.getElementById('fImageUrl').value.trim(),
+      source_url:document.getElementById('fSource').value.trim(),
+      author_id:me.id, status:'pending', published:false };
+  }
+  let res;
+  if(id){ res=await sb.from(table).update(payload).eq('id',id); }
+  else{
+    if(type==='article') payload.slug=slugify(title)+'-'+Math.random().toString(36).slice(2,6);
+    res=await sb.from(table).insert(payload);
+  }
+  btn.disabled=false; btn.innerHTML='<i data-lucide="send" class="w-4 h-4"></i>Enviar a revisión';
+  if(res.error){ toast('Error: '+res.error.message,false); lucide.createIcons(); return; }
+  toast('Enviado a revisión'); closeEditor(); loadList();
+}
+
+async function deleteItem(){
+  const id=document.getElementById('itemId').value; if(!id)return;
+  if(!confirm('¿Eliminar esta publicación?'))return;
+  const table=document.getElementById('itemType').value==='article'?'articles':'news';
+  const { error }=await sb.from(table).delete().eq('id',id);
+  if(error){ toast('Error',false); return; }
+  toast('Eliminado'); closeEditor(); loadList();
+}
+</script>
+</body>
+</html>

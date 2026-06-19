@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel del administrador — ETHNOS</title>
+<link rel="icon" href="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['Inter','sans-serif'],mono:['"Space Mono"','monospace']},colors:{terra:{400:'#C45A2E',500:'#A24B2A',600:'#83391F'},ocre:{300:'#D4A95A',400:'#C2933D'},jungle:{500:'#1B4332'},ivory:{100:'#FBF8F1',200:'#F5F1EA'},ink:{900:'#1B1B1B',800:'#262626',700:'#3A3A3A',500:'#6B6B6B'}}}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#FBF8F1;color:#1B1B1B}
+  .font-display{font-family:'Fraunces',serif}.font-mono{font-family:'Space Mono',monospace}
+  .btn-terra{background:#A24B2A;color:#FBF8F1;font-weight:600;transition:transform .3s}.btn-terra:hover{transform:translateY(-2px)}
+  .btn-ghost{border:1.5px solid rgba(27,27,27,.15);color:#3A3A3A;transition:all .2s}.btn-ghost:hover{border-color:#A24B2A;color:#A24B2A}
+  .btn-ok{background:#1B4332;color:#fff;transition:transform .2s}.btn-ok:hover{transform:translateY(-1px)}
+  .btn-no{background:#A24B2A;color:#fff;transition:transform .2s}.btn-no:hover{transform:translateY(-1px)}
+  .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  .navlink{padding:10px 16px;border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;color:#6B6B6B;display:flex;align-items:center;gap:10px;position:relative}
+  .navlink.active{background:#1B1B1B;color:#FBF8F1}
+  .count{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:#A24B2A;color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+  .navlink.active .count{background:#FBF8F1;color:#1B1B1B}
+  .pane{display:none}.pane.active{display:block}
+  .badge{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;font-family:'Space Mono',monospace}
+  .b-pending{background:#C2933D22;color:#83391F}.b-approved{background:#1B433222;color:#1B4332}.b-rejected{background:#A24B2A22;color:#83391F}
+</style>
+</head>
+<body>
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-ink-900/8">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <div class="flex items-center gap-3"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-9" alt="ETHNOS"><span class="font-mono text-xs text-ink-500 hidden sm:block">Administración</span></div>
+    <div class="flex items-center gap-4">
+      <a href="index.html" target="_blank" class="btn-ghost px-4 py-2 rounded-lg text-sm inline-flex items-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i><span class="hidden sm:inline">Ver sitio</span></a>
+      <button onclick="signOut()" class="text-ink-500 hover:text-terra-600 transition-colors text-sm inline-flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i><span class="hidden sm:inline">Salir</span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-6 py-8">
+  <h1 class="font-display text-3xl mb-8">Panel del administrador</h1>
+  <div class="grid lg:grid-cols-[240px_1fr] gap-8">
+    <!-- Menú lateral -->
+    <aside class="space-y-1.5">
+      <div class="navlink active" onclick="showPane('escritores',this)"><i data-lucide="users" class="w-4 h-4"></i>Columnistas<span class="count" id="cEscritores" style="display:none">0</span></div>
+      <div class="navlink" onclick="showPane('articulos',this)"><i data-lucide="file-text" class="w-4 h-4"></i>Artículos<span class="count" id="cArticulos" style="display:none">0</span></div>
+      <div class="navlink" onclick="showPane('noticias',this)"><i data-lucide="newspaper" class="w-4 h-4"></i>Noticias<span class="count" id="cNoticias" style="display:none">0</span></div>
+      <div class="navlink" onclick="showPane('portada',this)"><i data-lucide="star" class="w-4 h-4"></i>Portada del mes</div>
+    </aside>
+
+    <!-- Contenido -->
+    <main>
+      <div id="loading" class="text-center py-20"><span class="inline-block w-10 h-10 border-2 border-terra-500 border-t-transparent rounded-full spin"></span></div>
+
+      <!-- COLUMNISTAS -->
+      <div class="pane active" id="pane-escritores">
+        <h2 class="font-display text-2xl mb-1">Solicitudes de columnistas</h2>
+        <p class="text-ink-500 text-sm mb-6">Aprueba o rechaza a quienes quieren escribir en ETHNOS.</p>
+        <div id="escritoresList" class="space-y-4"></div>
+      </div>
+
+      <!-- ARTÍCULOS -->
+      <div class="pane" id="pane-articulos">
+        <h2 class="font-display text-2xl mb-1">Artículos por revisar</h2>
+        <p class="text-ink-500 text-sm mb-6">Aprueba para publicar en el sitio, o rechaza.</p>
+        <div id="articulosList" class="space-y-4"></div>
+      </div>
+
+      <!-- NOTICIAS -->
+      <div class="pane" id="pane-noticias">
+        <h2 class="font-display text-2xl mb-1">Noticias por revisar</h2>
+        <p class="text-ink-500 text-sm mb-6">Aprueba para publicar en la sección de actualidad.</p>
+        <div id="noticiasList" class="space-y-4"></div>
+      </div>
+
+      <!-- PORTADA -->
+      <div class="pane" id="pane-portada">
+        <h2 class="font-display text-2xl mb-1">Artículo de portada del mes</h2>
+        <p class="text-ink-500 text-sm mb-6">Elige cuál artículo aparece destacado en la portada. Solo uno a la vez.</p>
+        <div id="portadaList" class="grid sm:grid-cols-2 gap-4"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
+<script>
+lucide.createIcons();
+let me=null;
+
+(async()=>{
+  me=await requireRole(['super_admin']);
+  if(!me) return;
+  await loadAll();
+})();
+
+function showPane(name,el){
+  document.querySelectorAll('.navlink').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+name).classList.add('active');
+}
+
+async function loadAll(){
+  document.getElementById('loading').style.display='none';
+  await Promise.all([loadEscritores(), loadArticulos(), loadNoticias(), loadPortada()]);
+}
+
+// ===== COLUMNISTAS =====
+async function loadEscritores(){
+  const { data }=await sb.from('profiles').select('*').eq('role','escritor').order('created_at',{ascending:false});
+  const all=data||[];
+  const pending=all.filter(p=>p.writer_status==='pending');
+  setCount('cEscritores',pending.length);
+  const cont=document.getElementById('escritoresList');
+  if(!all.length){ cont.innerHTML='<p class="text-ink-500 py-8 text-center">No hay columnistas registrados.</p>'; return; }
+  cont.innerHTML=all.map(p=>{
+    const st=p.writer_status;
+    const badge=st==='approved'?'<span class="badge b-approved">Aprobado</span>':st==='pending'?'<span class="badge b-pending">Pendiente</span>':st==='rejected'?'<span class="badge b-rejected">Rechazado</span>':'';
+    return `<div class="bg-white rounded-2xl border border-ink-900/8 p-5">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-2"><h3 class="font-display text-lg">${p.full_name||'(sin nombre)'}</h3>${badge}</div>
+          <p class="text-ink-500 text-sm mb-1">${p.email||''}</p>
+          ${p.specialty?`<p class="text-sm"><span class="font-medium">Área:</span> ${p.specialty}</p>`:''}
+          ${p.bio?`<p class="text-ink-500 text-sm mt-2 italic">"${p.bio}"</p>`:''}
+        </div>
+        ${st==='pending'?`<div class="flex gap-2 shrink-0">
+          <button onclick="setWriter('${p.id}','approved')" class="btn-ok px-4 py-2 rounded-lg text-sm inline-flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4"></i>Aprobar</button>
+          <button onclick="setWriter('${p.id}','rejected')" class="btn-no px-4 py-2 rounded-lg text-sm inline-flex items-center gap-1.5"><i data-lucide="x" class="w-4 h-4"></i>Rechazar</button>
+        </div>`:st==='approved'?`<button onclick="setWriter('${p.id}','rejected')" class="btn-ghost px-3 py-2 rounded-lg text-xs">Revocar</button>`:`<button onclick="setWriter('${p.id}','approved')" class="btn-ok px-3 py-2 rounded-lg text-xs">Aprobar</button>`}
+      </div>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+async function setWriter(id,status){
+  const { error }=await sb.from('profiles').update({writer_status:status}).eq('id',id);
+  if(error){ toast('Error',false); return; }
+  toast(status==='approved'?'Columnista aprobado':status==='rejected'?'Solicitud rechazada':'Actualizado');
+  loadEscritores();
+}
+
+// ===== ARTÍCULOS =====
+async function loadArticulos(){
+  const { data }=await sb.from('articles').select('*').order('created_at',{ascending:false});
+  const all=data||[];
+  const pending=all.filter(a=>a.status==='pending');
+  setCount('cArticulos',pending.length);
+  const cont=document.getElementById('articulosList');
+  // Mostrar pendientes primero
+  const ordered=[...pending,...all.filter(a=>a.status!=='pending')];
+  if(!ordered.length){ cont.innerHTML='<p class="text-ink-500 py-8 text-center">No hay artículos.</p>'; return; }
+  cont.innerHTML=ordered.map(a=>renderReviewItem(a,'articles')).join('');
+  lucide.createIcons();
+}
+// ===== NOTICIAS =====
+async function loadNoticias(){
+  const { data }=await sb.from('news').select('*').order('created_at',{ascending:false});
+  const all=data||[];
+  const pending=all.filter(n=>n.status==='pending');
+  setCount('cNoticias',pending.length);
+  const cont=document.getElementById('noticiasList');
+  const ordered=[...pending,...all.filter(n=>n.status!=='pending')];
+  if(!ordered.length){ cont.innerHTML='<p class="text-ink-500 py-8 text-center">No hay noticias.</p>'; return; }
+  cont.innerHTML=ordered.map(n=>renderReviewItem(n,'news')).join('');
+  lucide.createIcons();
+}
+function renderReviewItem(it,table){
+  const st=it.status;
+  const badge=st==='approved'?'<span class="badge b-approved">Publicado</span>':st==='pending'?'<span class="badge b-pending">Por revisar</span>':'<span class="badge b-rejected">Rechazado</span>';
+  return `<div class="bg-white rounded-2xl border border-ink-900/8 p-5 flex items-center gap-5">
+    <div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-ivory-200">${it.image_url?`<img src="${it.image_url}" class="w-full h-full object-cover">`:''}</div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2 mb-1">${badge}<span class="font-mono text-[10px] text-ink-500 uppercase">${it.category||''}</span><span class="font-mono text-[10px] text-ink-500">· ${it.author_name||''}</span></div>
+      <h3 class="font-display text-lg leading-snug truncate">${it.title}</h3>
+    </div>
+    <div class="flex gap-2 shrink-0">
+      ${st==='pending'?`<button onclick="review('${table}','${it.id}','approved')" class="btn-ok px-4 py-2 rounded-lg text-sm inline-flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4"></i>Publicar</button>
+        <button onclick="review('${table}','${it.id}','rejected')" class="btn-no px-3 py-2 rounded-lg text-sm"><i data-lucide="x" class="w-4 h-4"></i></button>`
+        :st==='approved'?`<button onclick="review('${table}','${it.id}','rejected')" class="btn-ghost px-3 py-2 rounded-lg text-xs">Despublicar</button>`
+        :`<button onclick="review('${table}','${it.id}','approved')" class="btn-ok px-3 py-2 rounded-lg text-xs">Publicar</button>`}
+    </div>
+  </div>`;
+}
+async function review(table,id,status){
+  const published = status==='approved';
+  const { error }=await sb.from(table).update({status,published}).eq('id',id);
+  if(error){ toast('Error',false); return; }
+  toast(status==='approved'?'Publicado en el sitio':'Actualizado');
+  if(table==='articles'){ loadArticulos(); loadPortada(); } else loadNoticias();
+}
+
+// ===== PORTADA DEL MES =====
+async function loadPortada(){
+  const { data }=await sb.from('articles').select('*').eq('status','approved').eq('published',true).order('created_at',{ascending:false});
+  const arts=data||[];
+  const cont=document.getElementById('portadaList');
+  if(!arts.length){ cont.innerHTML='<p class="text-ink-500 py-8">No hay artículos publicados aún.</p>'; return; }
+  cont.innerHTML=arts.map(a=>`
+    <div class="bg-white rounded-2xl border ${a.featured?'border-terra-500 ring-2 ring-terra-500/20':'border-ink-900/8'} overflow-hidden">
+      <div class="h-32 overflow-hidden relative">${a.image_url?`<img src="${a.image_url}" class="w-full h-full object-cover">`:''}
+        ${a.featured?'<span class="absolute top-3 left-3 badge bg-terra-500 text-white">★ En portada</span>':''}</div>
+      <div class="p-4">
+        <h3 class="font-display text-base leading-snug mb-3 line-clamp-2">${a.title}</h3>
+        ${a.featured?'<button disabled class="w-full py-2 rounded-lg text-sm bg-terra-500/10 text-terra-500 font-medium">Es la portada actual</button>'
+          :`<button onclick="makeFeatured('${a.id}')" class="btn-ghost w-full py-2 rounded-lg text-sm inline-flex items-center justify-center gap-1.5"><i data-lucide="star" class="w-4 h-4"></i>Poner en portada</button>`}
+      </div>
+    </div>`).join('');
+  lucide.createIcons();
+}
+async function makeFeatured(id){
+  const { error }=await setFeaturedArticle(id);
+  if(error){ toast('Error',false); return; }
+  toast('Artículo puesto en portada'); loadPortada();
+}
+
+function setCount(id,n){
+  const el=document.getElementById(id);
+  if(n>0){ el.textContent=n; el.style.display='flex'; } else el.style.display='none';
+}
+</script>
+</body>
+</html>
