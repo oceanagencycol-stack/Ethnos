@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diagnóstico ETHNOS</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:700px;margin:40px auto;padding:0 20px;background:#FBF8F1;color:#1B1B1B}
+  h1{font-size:24px}
+  .test{padding:14px;border-radius:10px;margin:10px 0;border:1px solid #ddd;background:#fff}
+  .ok{border-left:4px solid #1B4332}.fail{border-left:4px solid #A24B2A}
+  .label{font-weight:600;font-size:14px}.detail{font-size:13px;color:#666;margin-top:5px;font-family:monospace;word-break:break-all}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid #A24B2A;border-top-color:transparent;border-radius:50%;animation:s 1s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<h1>🔍 Diagnóstico de ETHNOS</h1>
+<p>Esta página revisa la conexión con Supabase y los datos. Ábrela en tu sitio desplegado.</p>
+<div id="results"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
+<script>
+const R=document.getElementById('results');
+function add(label,ok,detail){
+  const d=document.createElement('div');
+  d.className='test '+(ok?'ok':'fail');
+  d.innerHTML=`<div class="label">${ok?'✅':'❌'} ${label}</div><div class="detail">${detail}</div>`;
+  R.appendChild(d);
+}
+(async()=>{
+  // 1. URL
+  add('URL de Supabase', SUPABASE_URL.endsWith('.supabase.co'), SUPABASE_URL);
+  // 2. Conexión + artículos
+  try{
+    const { data, error } = await sb.from('articles').select('*');
+    if(error){ add('Conexión a tabla articles', false, 'Error: '+error.message); }
+    else{
+      add('Conexión a tabla articles', true, 'Conectado correctamente');
+      add('Artículos en la base de datos', data.length>0, `Encontrados: ${data.length} artículos`);
+      const pub = data.filter(a=>a.published && a.status==='approved');
+      add('Artículos publicados y aprobados', pub.length>0, `Publicados+aprobados: ${pub.length} (estos son los que se muestran en el sitio)`);
+      if(data.length>0 && pub.length===0){
+        add('⚠ Diagnóstico', false, 'Hay artículos pero ninguno está published=true Y status=approved. Revisa el schema.');
+      }
+    }
+  }catch(e){ add('Conexión', false, e.message); }
+  // 3. Noticias
+  try{
+    const { data, error } = await sb.from('news').select('*');
+    if(!error) add('Noticias en la base de datos', data.length>0, `Encontradas: ${data.length} noticias`);
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

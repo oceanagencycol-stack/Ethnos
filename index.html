@@ -110,20 +110,19 @@ tailwind.config={theme:{extend:{
       <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-12 w-auto" alt="ETHNOS">
     </a>
     <div class="hidden lg:flex items-center gap-8">
-      <a href="#articulos" class="nav-link">Artículos</a>
-      <a href="#noticias" class="nav-link">Noticias</a>
-      <a href="#columnistas" class="nav-link">Columnistas</a>
-      <a href="#mapa" class="nav-link">África</a>
-      <a href="#secciones" class="nav-link">Secciones</a>
-      <a href="#nosotros" class="nav-link">Nosotros</a>
+      <a href="#articulos" class="nav-link" data-i18n="nav_articulos">Artículos</a>
+      <a href="#noticias" class="nav-link" data-i18n="nav_noticias">Noticias</a>
+      <a href="#columnistas" class="nav-link" data-i18n="nav_columnistas">Columnistas</a>
+      <a href="#mapa" class="nav-link" data-i18n="nav_africa">África</a>
+      <a href="#secciones" class="nav-link" data-i18n="nav_secciones">Secciones</a>
+      <a href="#nosotros" class="nav-link" data-i18n="nav_nosotros">Nosotros</a>
       <div class="flex items-center gap-1 ml-2">
         <span class="lang-btn active" data-lang="es">ES</span>
         <span class="lang-btn" data-lang="en">EN</span>
-        <span class="lang-btn" data-lang="fr">FR</span>
         <span class="lang-btn" data-lang="pt">PT</span>
       </div>
-      <a href="acceso.html" class="nav-link">Acceder</a>
-      <a href="#donar" class="btn-terra px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider ml-2">Apóyanos</a>
+      <a href="acceso.html" class="nav-link" data-i18n="nav_acceder">Acceder</a>
+      <a href="#donar" class="btn-terra px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider ml-2" data-i18n="nav_apoyanos">Apóyanos</a>
     </div>
     <button onclick="toggleMenu()" class="lg:hidden text-ink-900"><i data-lucide="menu" class="w-7 h-7"></i></button>
   </div>
@@ -487,6 +486,7 @@ tailwind.config={theme:{extend:{
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/ethnos.js"></script>
+<script src="js/i18n.js"></script>
 <script>
 lucide.createIcons();
 
@@ -588,9 +588,11 @@ loadArticles();
 function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.transform=m.style.transform==='translateX(0%)'?'translateX(100%)':'translateX(0%)';}
 // Selector de idioma (visual por ahora; conectaremos i18n en sprint futuro)
 document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
+  ethSetLang(b.dataset.lang);
 }));
+// Aplicar idioma guardado al cargar
+ethApplyLang();
+document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===ethGetLang()));
 
 // ===== MAPA INTERACTIVO DE ÁFRICA Y LA DIÁSPORA =====
 const mapData = {
