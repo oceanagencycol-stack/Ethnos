@@ -4,8 +4,8 @@
 // =====================================================================
 
 // CONFIG: reemplaza con tus valores de Supabase (Project Settings → API)
-const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
-const SUPABASE_ANON_KEY = "TU_ANON_KEY_PUBLICA";
+const SUPABASE_URL = "https://jivgaxpejnytrkcllaal.supabase.c";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppdmdheHBlam55dHJrY2xsYWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4OTMxMTUsImV4cCI6MjA5NzQ2OTExNX0.I8To37KPkojFiiXZbRok7Wqw4pe28tWo6m1lIgVpdEU";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
