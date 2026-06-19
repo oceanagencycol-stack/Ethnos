@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear cuenta — ETHNOS</title>
+<link rel="icon" href="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['Inter','sans-serif'],mono:['"Space Mono"','monospace']},colors:{terra:{400:'#C45A2E',500:'#A24B2A',600:'#83391F'},ocre:{400:'#C2933D'},ivory:{100:'#FBF8F1',200:'#F5F1EA'},ink:{900:'#1B1B1B',500:'#6B6B6B'}}}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#FBF8F1;color:#1B1B1B}
+  .font-display{font-family:'Fraunces',serif}
+  .inp{width:100%;padding:13px 16px;border:1.5px solid rgba(27,27,27,.12);border-radius:12px;font-size:15px;outline:none;background:#fff;transition:border-color .2s}
+  .inp:focus{border-color:#A24B2A}
+  .btn-terra{background:#A24B2A;color:#FBF8F1;font-weight:600;transition:transform .3s}.btn-terra:hover{transform:translateY(-2px)}
+  .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  .role-card{border:2px solid rgba(27,27,27,.1);border-radius:16px;padding:18px;cursor:pointer;transition:all .2s}
+  .role-card.active{border-color:#A24B2A;background:#A24B2A08}
+  .role-card.active .check{opacity:1}
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 py-12">
+<div class="w-full max-w-md">
+  <div class="text-center mb-8">
+    <a href="index.html"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-14 mx-auto mb-6" alt="ETHNOS"></a>
+    <h1 class="font-display text-2xl mb-2">Únete a ETHNOS</h1>
+    <p class="text-ink-500 text-sm">Crea tu cuenta para leer, comentar y apoyar</p>
+  </div>
+
+  <!-- Elegir tipo de cuenta -->
+  <p class="text-sm font-medium text-ink-900 mb-3">¿Cómo quieres participar?</p>
+  <div class="grid grid-cols-2 gap-3 mb-6">
+    <div class="role-card active" id="cardLector" onclick="selRole('lector')">
+      <div class="flex items-start justify-between mb-2"><i data-lucide="book-open" class="w-6 h-6 text-terra-500"></i><i data-lucide="check-circle" class="w-5 h-5 text-terra-500 check opacity-0"></i></div>
+      <p class="font-semibold text-sm">Lector</p>
+      <p class="text-ink-500 text-xs mt-1">Leer, comentar, donar y suscribirte. Acceso inmediato.</p>
+    </div>
+    <div class="role-card" id="cardEscritor" onclick="selRole('escritor')">
+      <div class="flex items-start justify-between mb-2"><i data-lucide="pen-line" class="w-6 h-6 text-terra-500"></i><i data-lucide="check-circle" class="w-5 h-5 text-terra-500 check opacity-0"></i></div>
+      <p class="font-semibold text-sm">Columnista</p>
+      <p class="text-ink-500 text-xs mt-1">Publicar artículos y columnas. Requiere aprobación.</p>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div><label class="text-sm text-ink-500 mb-1.5 block">Nombre completo</label><input type="text" id="name" class="inp" placeholder="Tu nombre"></div>
+    <div><label class="text-sm text-ink-500 mb-1.5 block">Correo</label><input type="email" id="email" class="inp" placeholder="tu@correo.com"></div>
+    <div><label class="text-sm text-ink-500 mb-1.5 block">Contraseña</label><input type="password" id="pass" class="inp" placeholder="Mínimo 6 caracteres"></div>
+    <!-- Campos extra para escritor -->
+    <div id="writerFields" class="hidden space-y-4">
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Área temática</label><input type="text" id="specialty" class="inp" placeholder="Ej: Historia, Política, Territorio..."></div>
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Breve presentación</label><textarea id="bio" class="inp" rows="3" placeholder="Cuéntanos sobre ti y por qué quieres escribir en ETHNOS"></textarea></div>
+    </div>
+  </div>
+
+  <div id="writerNote" class="hidden mt-4 p-3 rounded-lg bg-ocre-400/10 text-sm text-ink-900 flex gap-2.5 items-start">
+    <i data-lucide="info" class="w-4 h-4 text-ocre-400 shrink-0 mt-0.5"></i>
+    <span>Tu solicitud como columnista será revisada por nuestro equipo editorial. Mientras tanto, podrás usar tu cuenta como lector.</span>
+  </div>
+
+  <button onclick="doRegister()" id="btn" class="btn-terra w-full mt-6 py-3.5 rounded-xl flex items-center justify-center gap-2">Crear cuenta <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+  <div id="msg" class="hidden mt-5 p-3 rounded-lg text-sm text-center"></div>
+  <p class="text-center text-ink-500 text-sm mt-6">¿Ya tienes cuenta? <a href="acceso.html" class="text-terra-500 font-semibold hover:underline">Inicia sesión</a></p>
+  <a href="index.html" class="block text-center text-ink-500/60 text-sm mt-4 hover:text-terra-500 transition-colors">← Volver al sitio</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
+<script>
+lucide.createIcons();
+let role='lector';
+function selRole(r){
+  role=r;
+  document.getElementById('cardLector').classList.toggle('active',r==='lector');
+  document.getElementById('cardEscritor').classList.toggle('active',r==='escritor');
+  document.getElementById('writerFields').classList.toggle('hidden',r!=='escritor');
+  document.getElementById('writerNote').classList.toggle('hidden',r!=='escritor');
+}
+async function doRegister(){
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const pass=document.getElementById('pass').value;
+  if(!name||!email||!pass){ showMsg('Completa todos los campos','error'); return; }
+  if(pass.length<6){ showMsg('La contraseña debe tener al menos 6 caracteres','error'); return; }
+  const btn=document.getElementById('btn'); btn.disabled=true; btn.innerHTML='<span class="inline-block w-4 h-4 border-2 border-ivory-100 border-t-transparent rounded-full spin"></span>';
+
+  const { data, error }=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+  if(error){ btn.disabled=false; btn.innerHTML='Crear cuenta'; showMsg(error.message,'error'); return; }
+
+  // Actualizar el perfil según el rol elegido
+  const uid=data.user?.id;
+  if(uid){
+    const updates={ full_name:name };
+    if(role==='escritor'){
+      updates.role='escritor';
+      updates.writer_status='pending';
+      updates.specialty=document.getElementById('specialty').value.trim();
+      updates.bio=document.getElementById('bio').value.trim();
+    }
+    // Esperar a que el trigger cree el perfil, luego actualizar
+    setTimeout(async()=>{
+      await sb.from('profiles').update(updates).eq('id',uid);
+    }, 800);
+  }
+  showMsg(role==='escritor'?'¡Cuenta creada! Tu solicitud de columnista está en revisión.':'¡Cuenta creada! Ya puedes acceder.','ok');
+  setTimeout(()=>location.href='index.html', 2200);
+}
+function showMsg(t,type){const m=document.getElementById('msg');m.className='mt-5 p-3 rounded-lg text-sm text-center '+(type==='error'?'bg-terra-600/10 text-terra-600':'bg-terra-500/10 text-terra-500');m.textContent=t;m.classList.remove('hidden');}
+</script>
+</body>
+</html>

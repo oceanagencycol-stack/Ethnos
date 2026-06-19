@@ -122,6 +122,7 @@ tailwind.config={theme:{extend:{
         <span class="lang-btn" data-lang="fr">FR</span>
         <span class="lang-btn" data-lang="pt">PT</span>
       </div>
+      <a href="acceso.html" class="nav-link">Acceder</a>
       <a href="#donar" class="btn-terra px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider ml-2">Apóyanos</a>
     </div>
     <button onclick="toggleMenu()" class="lg:hidden text-ink-900"><i data-lucide="menu" class="w-7 h-7"></i></button>
@@ -164,27 +165,7 @@ tailwind.config={theme:{extend:{
       <span class="eyebrow">Portada del mes</span>
       <span class="terra-line flex-1 max-w-[120px]"></span>
     </div>
-    <a href="articulo.html?slug=liderazgo-mujeres-afrodescendientes" class="reveal art-card group block">
-      <div class="grid lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden bg-white border border-ink-900/8 hover:border-terra-500/30 transition-colors shadow-sm">
-        <div class="h-80 lg:h-auto overflow-hidden">
-          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903312/ChatGPT_Image_19_jun_2026_15_11_16_ho7fv2.png" class="w-full h-full object-cover" alt="Liderazgo y Mujeres Afrodescendientes">
-        </div>
-        <div class="p-9 lg:p-14 flex flex-col justify-center">
-          <div class="flex items-center gap-3 mb-5">
-            <span class="px-3 py-1 rounded-full bg-terra-500/12 text-terra-500 text-xs font-mono uppercase tracking-wider">Pensamiento Crítico</span>
-          </div>
-          <h2 class="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] mb-5 group-hover:text-terra-500 transition-colors">Liderazgo y mujeres afrodescendientes: hacia una política de transformación radical</h2>
-          <p class="text-ink-500 font-light text-lg mb-7 leading-relaxed">El 8 de marzo no puede ser un simple recordatorio de techos de cristal rotos. Debe ser un ejercicio de memoria histórica y posicionamiento crítico frente a las agendas externas.</p>
-          <div class="flex items-center gap-4">
-            <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898797/ChatGPT_Image_19_jun_2026_14_41_21_iuu7qz.png" class="w-12 h-12 rounded-full object-cover" alt="María Alexandra Ocles">
-            <div>
-              <p class="font-medium text-ink-900">María Alexandra Ocles</p>
-              <p class="font-mono text-xs text-ink-500">Directora · 8 de marzo, 2026</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </a>
+    <div id="featuredArticle"></div>
   </div>
 </section>
 
@@ -198,70 +179,8 @@ tailwind.config={theme:{extend:{
       </div>
       <p class="text-ink-500 font-light max-w-sm">Ensayos, columnas y editoriales sobre el pensamiento afrodescendiente contemporáneo.</p>
     </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Art 2 -->
-      <a href="articulo.html?slug=8-marzo-conciencia-negra" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
-        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903313/ChatGPT_Image_19_jun_2026_15_12_51_jp7tbq.png" class="w-full h-full object-cover" alt=""></div>
-        <div class="p-7">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Política</span>
-          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Un 8 de Marzo de Conciencia Negra</h3>
-          <p class="text-ink-500 font-light text-sm mb-5">Memoria histórica y posicionamiento crítico para una fecha que no puede ser neutral.</p>
-          <p class="font-mono text-xs text-ink-500">James Early</p>
-        </div>
-      </a>
-      <!-- Art 3 -->
-      <a href="articulo.html?slug=crisis-movimiento-afro-trump" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
-        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903308/ChatGPT_Image_19_jun_2026_15_15_01_wiwzzn.png" class="w-full h-full object-cover" alt=""></div>
-        <div class="p-7">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Editorial</span>
-          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Crisis del movimiento afro y las políticas de Trump</h3>
-          <p class="text-ink-500 font-light text-sm mb-5">Un análisis editorial sobre el momento geopolítico y sus efectos en la diáspora.</p>
-          <p class="font-mono text-xs text-ink-500">ETHNOS Editorial</p>
-        </div>
-      </a>
-      <!-- Art 4 -->
-      <a href="articulo.html?slug=editorial-inaugural" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
-        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="w-full h-full object-cover bg-ink-900 p-8" alt=""></div>
-        <div class="p-7">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Historia</span>
-          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Editorial inaugural: por qué ETHNOS</h3>
-          <p class="text-ink-500 font-light text-sm mb-5">El manifiesto fundacional de una revista para el pensamiento de la diáspora.</p>
-          <p class="font-mono text-xs text-ink-500">James Early</p>
-        </div>
-      </a>
-      <!-- Art 5 -->
-      <a href="articulo.html?slug=segundo-decenio-afrodescendientes" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
-        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903309/ChatGPT_Image_19_jun_2026_15_17_04_ih1xgn.png" class="w-full h-full object-cover" alt=""></div>
-        <div class="p-7">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Territorio</span>
-          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Segundo Decenio Internacional de los Afrodescendientes</h3>
-          <p class="text-ink-500 font-light text-sm mb-5">Territorio, reparación y agenda internacional para la próxima década.</p>
-          <p class="font-mono text-xs text-ink-500">Carlos Rosero</p>
-        </div>
-      </a>
-      <!-- Art 6 -->
-      <a href="articulo.html?slug=campo-popular-afrocolombiano" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
-        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903307/ChatGPT_Image_19_jun_2026_15_40_16_bmncd5.png" class="w-full h-full object-cover" alt=""></div>
-        <div class="p-7">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Pensamiento Crítico</span>
-          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Pensar el campo popular afrocolombiano</h3>
-          <p class="text-ink-500 font-light text-sm mb-5">Una reflexión sobre las bases sociales y políticas del campo afrocolombiano.</p>
-          <p class="font-mono text-xs text-ink-500">Elinet Daniel Casimir</p>
-        </div>
-      </a>
-      <!-- Art 7 -->
-      <a href="articulo.html?slug=haiti-luz-panafricanista" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
-        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903306/ChatGPT_Image_19_jun_2026_16_01_49_h4zd45.png" class="w-full h-full object-cover" alt=""></div>
-        <div class="p-7">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Pensamiento Crítico</span>
-          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Haití, una luz panafricanista frente al imperialismo</h3>
-          <p class="text-ink-500 font-light text-sm mb-5">El legado revolucionario haitiano frente a la geopolítica imperialista actual.</p>
-          <p class="font-mono text-xs text-ink-500">Romero Jorge Rodríguez</p>
-        </div>
-      </a>
-    </div>
-  </div>
+    <div id="articlesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div id="articlesLoading" class="text-center py-16"><span class="inline-block w-8 h-8 border-2 border-terra-500 border-t-transparent rounded-full" style="animation:spin 1s linear infinite"></span></div>  </div>
 </section>
 
 <!-- NOTICIAS DE ACTUALIDAD -->
@@ -566,8 +485,52 @@ tailwind.config={theme:{extend:{
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
 <script>
 lucide.createIcons();
+
+// ===== Cargar artículos desde Supabase =====
+async function loadArticles(){
+  try{
+    const { data, error } = await sb.from('articles').select('*').eq('published',true).eq('status','approved').order('created_at',{ascending:false});
+    if(error) throw error;
+    const arts = data||[];
+    const loading=document.getElementById('articlesLoading'); if(loading) loading.style.display='none';
+    const featured = arts.find(a=>a.featured) || arts[0];
+    const rest = arts.filter(a=>a!==featured);
+
+    // Destacado
+    const fa=document.getElementById('featuredArticle');
+    if(featured && fa){
+      fa.innerHTML = `<a href="articulo.html?slug=${featured.slug}" class="art-card group block">
+        <div class="grid lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden bg-white border border-ink-900/8 hover:border-terra-500/30 transition-colors shadow-sm">
+          <div class="h-80 lg:h-auto overflow-hidden"><img src="${featured.image_url||''}" class="w-full h-full object-cover" alt="${featured.title}"></div>
+          <div class="p-9 lg:p-14 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-5"><span class="px-3 py-1 rounded-full bg-terra-500/12 text-terra-500 text-xs font-mono uppercase tracking-wider">${featured.category||''}</span></div>
+            <h2 class="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] mb-5 group-hover:text-terra-500 transition-colors">${featured.title}</h2>
+            <p class="text-ink-500 font-light text-lg mb-7 leading-relaxed">${featured.excerpt||featured.subtitle||''}</p>
+            <div class="flex items-center gap-4">
+              <div><p class="font-medium text-ink-900">${featured.author_name||''}</p><p class="font-mono text-xs text-ink-500">${featured.category||''}</p></div>
+            </div>
+          </div>
+        </div></a>`;
+    }
+    // Grilla
+    const grid=document.getElementById('articlesGrid');
+    if(grid){
+      grid.innerHTML = rest.map(a=>`<a href="articulo.html?slug=${a.slug}" class="art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="${a.image_url||''}" class="w-full h-full object-cover" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">${a.category||''}</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">${a.title}</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">${a.excerpt||a.subtitle||''}</p>
+          <p class="font-mono text-xs text-ink-500">${a.author_name||''}</p>
+        </div></a>`).join('');
+    }
+  }catch(e){ console.error(e); const l=document.getElementById('articlesLoading'); if(l) l.innerHTML='<p class="text-ink-500">No se pudieron cargar los artículos.</p>'; }
+}
+loadArticles();
 
 // ===== INTRO ANIMADA: red de conexiones (rutas de la diáspora) =====
 (function(){
