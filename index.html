@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETHNOS — Revista de pensamiento afrodescendiente y diáspora africana</title>
+<meta name="description" content="ETHNOS es una revista digital de pensamiento crítico afrodescendiente: política, territorio, historia y diáspora africana desde las voces que la habitan.">
+<meta property="og:title" content="ETHNOS — Pensamiento afrodescendiente">
+<meta property="og:description" content="Revista de pensamiento crítico de la diáspora africana.">
+<meta property="og:image" content="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+  fontFamily:{display:['"Fraunces"','Georgia','serif'],body:['Inter','sans-serif'],mono:['"Space Mono"','monospace']},
+  colors:{
+    terra:{400:'#C45A2E',500:'#A24B2A',600:'#83391F'},
+    ocre:{300:'#D4A95A',400:'#C2933D',500:'#A87D2D'},
+    ivory:{100:'#FBF8F1',200:'#F5F1EA',300:'#EAE3D6'},
+    ink:{900:'#1B1B1B',800:'#262626',700:'#3A3A3A',500:'#6B6B6B'},
+    clay:{500:'#7A4A35',600:'#5E3826'}
+  }
+}}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:#FFFFFF;color:#1B1B1B;overflow-x:hidden}
+  .font-display{font-family:'Fraunces',serif}.font-mono{font-family:'Space Mono',monospace}
+  ::selection{background:#A24B2A;color:#FBF8F1}
+  ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#F5F1EA}::-webkit-scrollbar-thumb{background:#A24B2A;border-radius:5px}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#A24B2A;font-weight:700}
+  .terra-line{height:2px;background:linear-gradient(90deg,#A24B2A,#C2933D)}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+  .nav-link{font-size:13px;font-weight:500;letter-spacing:.02em;color:#3A3A3A;transition:color .3s;position:relative}
+  .nav-link:hover{color:#A24B2A}
+  .nav-link::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;background:#A24B2A;transition:width .3s}
+  .nav-link:hover::after{width:100%}
+  .btn-terra{background:#A24B2A;color:#FBF8F1;font-weight:600;transition:transform .3s,box-shadow .3s}
+  .btn-terra:hover{transform:translateY(-2px);box-shadow:0 12px 28px -8px rgba(162,75,42,.45)}
+  .btn-ghost{border:1.5px solid #A24B2A;color:#A24B2A;transition:all .3s}
+  .btn-ghost:hover{background:#A24B2A;color:#FBF8F1}
+  .lang-btn{font-family:'Space Mono',monospace;font-size:11px;padding:3px 9px;border-radius:5px;color:#6B6B6B;transition:all .2s;cursor:pointer}
+  .lang-btn.active{background:#A24B2A;color:#FBF8F1}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+  .hero-rise{opacity:0;animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) forwards}
+  .d1{animation-delay:.15s}.d2{animation-delay:.35s}.d3{animation-delay:.55s}.d4{animation-delay:.75s}
+  .art-card img{transition:transform .7s cubic-bezier(.16,1,.3,1)}
+  .art-card:hover img{transform:scale(1.05)}
+  @media(prefers-reduced-motion:reduce){.reveal,.hero-rise{opacity:1!important;transform:none!important;animation:none}}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-lg border-b border-ink-900/6" id="navbar">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
+    <a href="#top" class="flex items-center gap-3">
+      <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-12 w-auto" alt="ETHNOS">
+    </a>
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#articulos" class="nav-link">Artículos</a>
+      <a href="#columnistas" class="nav-link">Columnistas</a>
+      <a href="#secciones" class="nav-link">Secciones</a>
+      <a href="#nosotros" class="nav-link">Nosotros</a>
+      <div class="flex items-center gap-1 ml-2">
+        <span class="lang-btn active" data-lang="es">ES</span>
+        <span class="lang-btn" data-lang="en">EN</span>
+        <span class="lang-btn" data-lang="fr">FR</span>
+        <span class="lang-btn" data-lang="pt">PT</span>
+      </div>
+      <a href="#donar" class="btn-terra px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider ml-2">Apóyanos</a>
+    </div>
+    <button onclick="toggleMenu()" class="lg:hidden text-ink-900"><i data-lucide="menu" class="w-7 h-7"></i></button>
+  </div>
+</nav>
+
+<!-- MENÚ MÓVIL -->
+<div id="mobileMenu" class="fixed inset-0 z-40 bg-ivory-100/98 backdrop-blur-lg flex flex-col items-center justify-center gap-7 translate-x-full transition-transform duration-500">
+  <button onclick="toggleMenu()" class="absolute top-7 right-7 text-ink-900"><i data-lucide="x" class="w-8 h-8"></i></button>
+  <a href="#articulos" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Artículos</a>
+  <a href="#columnistas" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Columnistas</a>
+  <a href="#secciones" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Secciones</a>
+  <a href="#nosotros" onclick="toggleMenu()" class="font-display text-3xl text-ink-900">Nosotros</a>
+  <a href="#donar" onclick="toggleMenu()" class="btn-terra px-7 py-3 rounded-full mt-4">Apóyanos</a>
+</div>
+
+<!-- HERO minimalista con acento de color -->
+<section class="relative pt-36 pb-24 px-6 lg:px-12" id="top">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="hero-rise d1 flex items-center gap-4 mb-12">
+      <span class="w-2.5 h-2.5 rounded-full bg-terra-500"></span>
+      <span class="eyebrow">Revista de pensamiento afrodescendiente</span>
+    </div>
+    <h1 class="hero-rise d2 font-display font-light text-5xl md:text-7xl lg:text-[6rem] leading-[0.95] tracking-tight max-w-5xl mb-12">
+      Las ideas que <span class="italic text-terra-500">nos nombran</span>, escritas por quienes <span class="italic" style="color:#C2933D">las viven</span>.
+    </h1>
+    <div class="hero-rise d3 flex flex-col md:flex-row md:items-end justify-between gap-8 pt-8 border-t border-ink-900/10">
+      <p class="text-lg md:text-xl text-ink-500 font-light leading-relaxed max-w-xl">Política, territorio, historia y memoria de la diáspora africana en español, inglés y portugués. Desde las voces que la habitan.</p>
+      <a href="#articulos" class="btn-terra px-7 py-3.5 rounded-full text-sm font-semibold inline-flex items-center gap-2 whitespace-nowrap">Explorar la edición <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ARTÍCULO DESTACADO DEL MES -->
+<section class="px-6 lg:px-12 pb-20" id="destacado">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal flex items-center gap-4 mb-8">
+      <span class="eyebrow">Portada del mes</span>
+      <span class="terra-line flex-1 max-w-[120px]"></span>
+    </div>
+    <a href="articulo.html?slug=liderazgo-mujeres-afrodescendientes" class="reveal art-card group block">
+      <div class="grid lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden bg-white border border-ink-900/8 hover:border-terra-500/30 transition-colors shadow-sm">
+        <div class="h-80 lg:h-auto overflow-hidden">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903312/ChatGPT_Image_19_jun_2026_15_11_16_ho7fv2.png" class="w-full h-full object-cover" alt="Liderazgo y Mujeres Afrodescendientes">
+        </div>
+        <div class="p-9 lg:p-14 flex flex-col justify-center">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="px-3 py-1 rounded-full bg-terra-500/12 text-terra-500 text-xs font-mono uppercase tracking-wider">Pensamiento Crítico</span>
+          </div>
+          <h2 class="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] mb-5 group-hover:text-terra-500 transition-colors">Liderazgo y mujeres afrodescendientes: hacia una política de transformación radical</h2>
+          <p class="text-ink-500 font-light text-lg mb-7 leading-relaxed">El 8 de marzo no puede ser un simple recordatorio de techos de cristal rotos. Debe ser un ejercicio de memoria histórica y posicionamiento crítico frente a las agendas externas.</p>
+          <div class="flex items-center gap-4">
+            <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898797/ChatGPT_Image_19_jun_2026_14_41_21_iuu7qz.png" class="w-12 h-12 rounded-full object-cover" alt="María Alexandra Ocles">
+            <div>
+              <p class="font-medium text-ink-900">María Alexandra Ocles</p>
+              <p class="font-mono text-xs text-ink-500">Directora · 8 de marzo, 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- GRILLA DE ARTÍCULOS -->
+<section class="px-6 lg:px-12 pb-24" id="articulos">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-5 mb-12">
+      <div>
+        <div class="flex items-center gap-4 mb-5"><span class="eyebrow">La edición</span></div>
+        <h2 class="font-display font-light text-4xl md:text-5xl leading-tight">Últimas publicaciones</h2>
+      </div>
+      <p class="text-ink-500 font-light max-w-sm">Ensayos, columnas y editoriales sobre el pensamiento afrodescendiente contemporáneo.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Art 2 -->
+      <a href="articulo.html?slug=8-marzo-conciencia-negra" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903313/ChatGPT_Image_19_jun_2026_15_12_51_jp7tbq.png" class="w-full h-full object-cover" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Política</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Un 8 de Marzo de Conciencia Negra</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">Memoria histórica y posicionamiento crítico para una fecha que no puede ser neutral.</p>
+          <p class="font-mono text-xs text-ink-500">James Early</p>
+        </div>
+      </a>
+      <!-- Art 3 -->
+      <a href="articulo.html?slug=crisis-movimiento-afro-trump" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903308/ChatGPT_Image_19_jun_2026_15_15_01_wiwzzn.png" class="w-full h-full object-cover" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Editorial</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Crisis del movimiento afro y las políticas de Trump</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">Un análisis editorial sobre el momento geopolítico y sus efectos en la diáspora.</p>
+          <p class="font-mono text-xs text-ink-500">ETHNOS Editorial</p>
+        </div>
+      </a>
+      <!-- Art 4 -->
+      <a href="articulo.html?slug=editorial-inaugural" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="w-full h-full object-cover bg-ink-900 p-8" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Historia</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Editorial inaugural: por qué ETHNOS</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">El manifiesto fundacional de una revista para el pensamiento de la diáspora.</p>
+          <p class="font-mono text-xs text-ink-500">James Early</p>
+        </div>
+      </a>
+      <!-- Art 5 -->
+      <a href="articulo.html?slug=segundo-decenio-afrodescendientes" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903309/ChatGPT_Image_19_jun_2026_15_17_04_ih1xgn.png" class="w-full h-full object-cover" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Territorio</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Segundo Decenio Internacional de los Afrodescendientes</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">Territorio, reparación y agenda internacional para la próxima década.</p>
+          <p class="font-mono text-xs text-ink-500">Carlos Rosero</p>
+        </div>
+      </a>
+      <!-- Art 6 -->
+      <a href="articulo.html?slug=campo-popular-afrocolombiano" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903307/ChatGPT_Image_19_jun_2026_15_40_16_bmncd5.png" class="w-full h-full object-cover" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Pensamiento Crítico</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Pensar el campo popular afrocolombiano</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">Una reflexión sobre las bases sociales y políticas del campo afrocolombiano.</p>
+          <p class="font-mono text-xs text-ink-500">Elinet Daniel Casimir</p>
+        </div>
+      </a>
+      <!-- Art 7 -->
+      <a href="articulo.html?slug=haiti-luz-panafricanista" class="reveal art-card group block bg-white rounded-2xl overflow-hidden border border-ink-900/8 hover:border-terra-500/30 transition-colors">
+        <div class="h-52 overflow-hidden"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903306/ChatGPT_Image_19_jun_2026_16_01_49_h4zd45.png" class="w-full h-full object-cover" alt=""></div>
+        <div class="p-7">
+          <span class="font-mono text-[10px] uppercase tracking-wider text-terra-500">Pensamiento Crítico</span>
+          <h3 class="font-display text-xl leading-snug mt-3 mb-3 group-hover:text-terra-500 transition-colors">Haití, una luz panafricanista frente al imperialismo</h3>
+          <p class="text-ink-500 font-light text-sm mb-5">El legado revolucionario haitiano frente a la geopolítica imperialista actual.</p>
+          <p class="font-mono text-xs text-ink-500">Romero Jorge Rodríguez</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- COLUMNISTAS -->
+<section class="px-6 lg:px-12 py-24 bg-ivory-200" id="columnistas">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal text-center mb-16 max-w-2xl mx-auto">
+      <div class="flex items-center justify-center gap-4 mb-5"><span class="terra-line w-12"></span><span class="eyebrow">Las voces</span><span class="terra-line w-12"></span></div>
+      <h2 class="font-display font-light text-4xl md:text-5xl leading-tight mb-5">Quienes escriben ETHNOS</h2>
+      <p class="text-ink-500 font-light text-lg">Pensadores, académicos y activistas de la diáspora africana en las Américas y el mundo.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898797/ChatGPT_Image_19_jun_2026_14_41_21_iuu7qz.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="María Alexandra Ocles">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">María Alexandra Ocles</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Directora</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898799/ChatGPT_Image_19_jun_2026_14_51_58_caf89v.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Daniel Garcés">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Daniel Garcés</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898799/ChatGPT_Image_19_jun_2026_14_45_30_y72slt.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Álvaro Arroyo">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Álvaro Arroyo</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898788/ChatGPT_Image_19_jun_2026_14_31_20_yhfgou.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Ochy Curiel">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Ochy Curiel</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898788/ChatGPT_Image_19_jun_2026_14_33_09_kz8ydr.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Óscar Chalá">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Óscar Chalá</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781903306/ChatGPT_Image_19_jun_2026_16_01_49_h4zd45.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Romero Rodríguez">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Romero Rodríguez</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898789/ChatGPT_Image_19_jun_2026_14_35_27_rvqwus.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Palmira Ríos">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Palmira Ríos</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898784/ChatGPT_Image_19_jun_2026_14_37_16_eyecyb.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Orlando Cartagena">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Orlando Cartagena</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898788/ChatGPT_Image_19_jun_2026_14_38_41_negeau.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Agustín Lao Montes">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">Agustín Lao Montes</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+      <div class="reveal group text-center">
+        <div class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-4">
+          <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898798/ChatGPT_Image_19_jun_2026_14_39_57_m970ru.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="James Early">
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+        <h3 class="font-display text-lg leading-tight">James Early</h3>
+        <p class="font-mono text-[10px] uppercase tracking-wider text-terra-500 mt-1">Columnista</p>
+      </div>
+    </div>
+    <div class="reveal text-center mt-14">
+      <p class="text-ink-500 font-light mb-5">¿Quieres escribir en ETHNOS?</p>
+      <a href="registro.html" class="btn-ghost px-7 py-3.5 rounded-full text-sm font-semibold inline-flex items-center gap-2">Postúlate como columnista <i data-lucide="pen-line" class="w-4 h-4"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIONES TEMÁTICAS -->
+<section class="px-6 lg:px-12 py-24" id="secciones">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal mb-14"><div class="flex items-center gap-4 mb-5"><span class="eyebrow">Explora por tema</span></div>
+      <h2 class="font-display font-light text-4xl md:text-5xl leading-tight">Secciones</h2></div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <a href="#articulos" class="reveal group p-8 rounded-2xl bg-terra-500 text-ivory-100 hover:-translate-y-1 transition-transform">
+        <i data-lucide="scale" class="w-8 h-8 mb-5"></i>
+        <h3 class="font-display text-2xl mb-2">Política</h3>
+        <p class="text-ivory-100/70 font-light text-sm">Poder, representación y derechos.</p>
+      </a>
+      <a href="#articulos" class="reveal group p-8 rounded-2xl bg-ocre-400 text-ink-900 hover:-translate-y-1 transition-transform">
+        <i data-lucide="map" class="w-8 h-8 mb-5"></i>
+        <h3 class="font-display text-2xl mb-2">Territorio</h3>
+        <p class="text-ink-900/70 font-light text-sm">Tierra, comunidad y autonomía.</p>
+      </a>
+      <a href="#articulos" class="reveal group p-8 rounded-2xl bg-clay-500 text-ivory-100 hover:-translate-y-1 transition-transform">
+        <i data-lucide="book-open" class="w-8 h-8 mb-5"></i>
+        <h3 class="font-display text-2xl mb-2">Historia</h3>
+        <p class="text-ivory-100/70 font-light text-sm">Memoria y raíces de la diáspora.</p>
+      </a>
+      <a href="#articulos" class="reveal group p-8 rounded-2xl bg-ink-900 text-ivory-100 hover:-translate-y-1 transition-transform">
+        <i data-lucide="lightbulb" class="w-8 h-8 mb-5"></i>
+        <h3 class="font-display text-2xl mb-2">Pensamiento</h3>
+        <p class="text-ivory-100/70 font-light text-sm">Teoría crítica y filosofía negra.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section class="px-6 lg:px-12 py-24 bg-ink-900 text-ivory-100" id="nosotros">
+  <div class="max-w-[1100px] mx-auto text-center">
+    <div class="reveal">
+      <div class="flex items-center justify-center gap-4 mb-7"><span class="terra-line w-12"></span><span class="eyebrow" style="color:#D4A95A">Manifiesto</span><span class="terra-line w-12"></span></div>
+      <h2 class="font-display font-light text-3xl md:text-5xl leading-[1.15] mb-8">ETHNOS nace de una convicción: el pensamiento afrodescendiente no necesita intérpretes. <span class="italic text-ocre-300">Necesita plataformas.</span></h2>
+      <p class="text-ivory-100/70 font-light text-lg leading-relaxed max-w-3xl mx-auto">Somos una revista digital dedicada al pensamiento crítico de la diáspora africana. Publicamos voces que han sido históricamente silenciadas, desde la academia, el activismo y el territorio, en español, inglés, francés y portugués. Porque las ideas que nos nombran deben ser escritas por quienes las viven.</p>
+    </div>
+  </div>
+</section>
+
+<!-- APOYO / DONAR -->
+<section class="px-6 lg:px-12 py-24" id="donar">
+  <div class="max-w-[1100px] mx-auto">
+    <div class="reveal rounded-3xl bg-gradient-to-br from-terra-500 to-clay-600 text-ivory-100 p-10 md:p-16 text-center">
+      <div class="flex items-center justify-center gap-4 mb-7"><span class="eyebrow" style="color:#FBF8F1">Sostén el proyecto</span></div>
+      <h2 class="font-display font-light text-3xl md:text-5xl leading-tight mb-6">El pensamiento libre<br>se sostiene en comunidad</h2>
+      <p class="text-ivory-100/80 font-light text-lg mb-10 max-w-xl mx-auto">ETHNOS es independiente. Tu aporte permite que más voces de la diáspora encuentren un lugar donde ser leídas. Dona o suscríbete para apoyar el pensamiento afrodescendiente.</p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="donar.html" class="bg-ivory-100 text-terra-500 px-8 py-4 rounded-full font-semibold hover:-translate-y-1 transition-transform inline-flex items-center gap-2"><i data-lucide="heart" class="w-5 h-5"></i>Hacer una donación</a>
+        <a href="suscripcion.html" class="btn-ghost border-ivory-100 text-ivory-100 hover:bg-ivory-100 hover:text-terra-500 px-8 py-4 rounded-full font-semibold inline-flex items-center gap-2"><i data-lucide="star" class="w-5 h-5"></i>Suscribirme</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="px-6 lg:px-12 py-16 bg-ivory-200 border-t border-ink-900/8">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid md:grid-cols-3 gap-10 mb-12">
+      <div>
+        <img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-14 mb-5" alt="ETHNOS">
+        <p class="text-ink-500 font-light text-sm leading-relaxed max-w-xs">Revista de pensamiento crítico afrodescendiente y diáspora africana.</p>
+      </div>
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-terra-500 mb-4">Navegar</p>
+        <div class="flex flex-col gap-2.5">
+          <a href="#articulos" class="nav-link">Artículos</a>
+          <a href="#columnistas" class="nav-link">Columnistas</a>
+          <a href="#secciones" class="nav-link">Secciones</a>
+          <a href="registro.html" class="nav-link">Escribir en ETHNOS</a>
+        </div>
+      </div>
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-terra-500 mb-4">Apoyo</p>
+        <div class="flex flex-col gap-2.5">
+          <a href="donar.html" class="nav-link">Donar</a>
+          <a href="suscripcion.html" class="nav-link">Suscribirse</a>
+          <a href="#nosotros" class="nav-link">Sobre nosotros</a>
+        </div>
+      </div>
+    </div>
+    <div class="terra-line w-full opacity-30 mb-8"></div>
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-ink-500 text-sm font-light">
+      <p>© 2026 ETHNOS. Pensamiento de la diáspora africana.</p>
+      <p class="font-mono text-xs">ES · EN · FR · PT</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+lucide.createIcons();
+function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.transform=m.style.transform==='translateX(0%)'?'translateX(100%)':'translateX(0%)';}
+// Selector de idioma (visual por ahora; conectaremos i18n en sprint futuro)
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+}));
+// Reveal on scroll
+const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
