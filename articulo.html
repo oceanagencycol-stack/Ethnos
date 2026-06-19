@@ -68,6 +68,30 @@ tailwind.config={theme:{extend:{
       <a id="shTw" href="#" target="_blank" class="w-10 h-10 rounded-full border border-ink-900/15 flex items-center justify-center hover:border-terra-500 hover:text-terra-500 transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
     </div>
   </article>
+
+  <!-- COMENTARIOS -->
+  <section class="max-w-3xl mx-auto px-6 pb-16">
+    <div class="terra-line w-full mb-10"></div>
+    <h2 class="font-display text-2xl mb-6">Conversación <span id="commentCount" class="text-ink-500 text-lg font-body"></span></h2>
+
+    <!-- Formulario (solo logueados) -->
+    <div id="commentForm" class="hidden mb-8">
+      <textarea id="commentText" rows="3" class="w-full p-4 border border-ink-900/12 rounded-xl outline-none focus:border-terra-500 transition-colors" placeholder="Comparte tu reflexión..."></textarea>
+      <div class="flex justify-end mt-3">
+        <button onclick="postComment()" id="commentBtn" class="btn-terra px-6 py-2.5 rounded-full text-sm inline-flex items-center gap-2">Publicar comentario <i data-lucide="send" class="w-4 h-4"></i></button>
+      </div>
+    </div>
+    <!-- Aviso para no logueados -->
+    <div id="commentLogin" class="hidden mb-8 p-5 rounded-xl bg-ivory-200 text-center">
+      <p class="text-ink-500 text-sm mb-3">Inicia sesión para unirte a la conversación</p>
+      <a href="acceso.html" class="btn-terra px-5 py-2.5 rounded-full text-sm inline-flex items-center gap-2">Acceder <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+
+    <!-- Lista de comentarios -->
+    <div id="commentsList" class="space-y-5"></div>
+    <div id="commentsEmpty" class="hidden text-center py-8 text-ink-500 text-sm">Sé la primera persona en comentar.</div>
+  </section>
+
   <section class="bg-ivory-200 py-16">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <h2 class="font-display text-3xl mb-4">Seguir leyendo</h2>
@@ -112,9 +136,65 @@ async function loadArticle(){
     document.getElementById('shLink').href='https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url);
     document.getElementById('shTw').href='https://twitter.com/intent/tweet?url='+encodeURIComponent(url);
     lucide.createIcons();
+    initComments(data.id);
   }catch(e){ console.error(e); showNF(); }
 }
 function showNF(){ document.getElementById('loading').style.display='none'; document.getElementById('notfound').style.display='flex'; }
+
+// ===== COMENTARIOS =====
+let articleId=null, me=null;
+async function initComments(artId){
+  articleId=artId;
+  me=await currentProfile();
+  if(me){ document.getElementById('commentForm').classList.remove('hidden'); }
+  else{ document.getElementById('commentLogin').classList.remove('hidden'); }
+  loadComments();
+}
+async function loadComments(){
+  const { data }=await sb.from('comments').select('*').eq('article_id',articleId).eq('status','visible').order('created_at',{ascending:false});
+  const list=data||[];
+  document.getElementById('commentCount').textContent = list.length?`· ${list.length}`:'';
+  const cont=document.getElementById('commentsList');
+  if(!list.length){ document.getElementById('commentsEmpty').classList.remove('hidden'); cont.innerHTML=''; return; }
+  document.getElementById('commentsEmpty').classList.add('hidden');
+  cont.innerHTML=list.map(c=>{
+    const initial=(c.user_name||'?').charAt(0).toUpperCase();
+    const date=new Date(c.created_at).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'});
+    const mine = me && c.user_id===me.id;
+    return `<div class="flex gap-4">
+      <div class="w-10 h-10 rounded-full bg-terra-500/12 text-terra-500 flex items-center justify-center font-display text-lg shrink-0">${initial}</div>
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-1">
+          <span class="font-medium text-sm">${c.user_name||'Anónimo'}</span>
+          <span class="font-mono text-[11px] text-ink-500">${date}</span>
+          ${mine?`<button onclick="delComment('${c.id}')" class="ml-auto text-ink-500/50 hover:text-terra-600 transition-colors"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>`:''}
+        </div>
+        <p class="text-ink-700 font-light leading-relaxed">${escapeHtml(c.content)}</p>
+      </div>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+async function postComment(){
+  const txt=document.getElementById('commentText').value.trim();
+  if(!txt){ return; }
+  const btn=document.getElementById('commentBtn'); btn.disabled=true;
+  const { error }=await sb.from('comments').insert({
+    article_id:articleId, user_id:me.id, user_name:me.full_name||'Lector', content:txt
+  });
+  btn.disabled=false;
+  if(error){ toast('No se pudo publicar','error'); return; }
+  document.getElementById('commentText').value='';
+  toast('Comentario publicado');
+  loadComments();
+}
+async function delComment(id){
+  if(!confirm('¿Eliminar tu comentario?'))return;
+  await sb.from('comments').delete().eq('id',id);
+  loadComments();
+}
+
 loadArticle();
 </script>
 </body>

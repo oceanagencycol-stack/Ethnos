@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apoya a ETHNOS — Donar</title>
+<link rel="icon" href="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['Inter','sans-serif'],mono:['"Space Mono"','monospace']},colors:{terra:{400:'#C45A2E',500:'#A24B2A',600:'#83391F'},ocre:{400:'#C2933D'},ivory:{100:'#FBF8F1',200:'#F5F1EA'},ink:{900:'#1B1B1B',500:'#6B6B6B'}}}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#FBF8F1;color:#1B1B1B}
+  .font-display{font-family:'Fraunces',serif}
+  .inp{width:100%;padding:13px 16px;border:1.5px solid rgba(27,27,27,.12);border-radius:12px;font-size:15px;outline:none;background:#fff;transition:border-color .2s}
+  .inp:focus{border-color:#A24B2A}
+  .btn-terra{background:#A24B2A;color:#FBF8F1;font-weight:600;transition:transform .3s}.btn-terra:hover{transform:translateY(-2px)}
+  .amount-btn{padding:16px;border:2px solid rgba(27,27,27,.1);border-radius:14px;cursor:pointer;transition:all .2s;text-align:center;font-weight:600}
+  .amount-btn.active{border-color:#A24B2A;background:#A24B2A0d;color:#A24B2A}
+  .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<nav class="bg-white/95 backdrop-blur-lg border-b border-ink-900/6">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-18 py-3">
+    <a href="index.html"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-11" alt="ETHNOS"></a>
+    <a href="index.html" class="text-sm text-ink-500 hover:text-terra-500 transition-colors">← Volver</a>
+  </div>
+</nav>
+
+<div class="max-w-xl mx-auto px-6 py-14">
+  <div class="text-center mb-10">
+    <div class="flex items-center justify-center gap-4 mb-5"><span class="font-mono text-xs uppercase tracking-[.3em] text-terra-500 font-bold">Apoya el proyecto</span></div>
+    <h1 class="font-display font-light text-4xl md:text-5xl leading-tight mb-4">El pensamiento libre se sostiene en comunidad</h1>
+    <p class="text-ink-500 font-light text-lg">Tu donación permite que más voces de la diáspora africana encuentren un lugar donde ser leídas.</p>
+  </div>
+
+  <div class="bg-white rounded-3xl border border-ink-900/8 p-8">
+    <!-- Montos -->
+    <p class="text-sm font-medium mb-3">Elige un monto (COP)</p>
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="amount-btn" onclick="selAmount(20000,this)">$20.000</div>
+      <div class="amount-btn active" onclick="selAmount(50000,this)">$50.000</div>
+      <div class="amount-btn" onclick="selAmount(100000,this)">$100.000</div>
+    </div>
+    <div class="mb-6">
+      <label class="text-sm text-ink-500 mb-1.5 block">O un monto libre</label>
+      <input type="number" id="customAmount" class="inp" placeholder="Otro valor" oninput="customSel()">
+    </div>
+
+    <div class="space-y-4 mb-6">
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Tu nombre</label><input type="text" id="name" class="inp" placeholder="Como quieres aparecer"></div>
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Correo</label><input type="email" id="email" class="inp" placeholder="tu@correo.com"></div>
+      <div><label class="text-sm text-ink-500 mb-1.5 block">Mensaje (opcional)</label><textarea id="message" rows="2" class="inp" placeholder="Unas palabras para ETHNOS"></textarea></div>
+    </div>
+
+    <button onclick="donate()" id="btn" class="btn-terra w-full py-4 rounded-xl flex items-center justify-center gap-2"><i data-lucide="heart" class="w-5 h-5"></i>Donar <span id="btnAmount">$50.000</span></button>
+    <p class="text-center text-ink-500 text-xs mt-4 flex items-center justify-center gap-1.5"><i data-lucide="lock" class="w-3.5 h-3.5"></i>Pago seguro procesado por Wompi</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
+<script>
+lucide.createIcons();
+let amount=50000;
+function selAmount(a,el){
+  amount=a;
+  document.querySelectorAll('.amount-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('customAmount').value='';
+  updateBtn();
+}
+function customSel(){
+  const v=parseInt(document.getElementById('customAmount').value)||0;
+  if(v>0){ amount=v; document.querySelectorAll('.amount-btn').forEach(b=>b.classList.remove('active')); updateBtn(); }
+}
+function updateBtn(){ document.getElementById('btnAmount').textContent='$'+amount.toLocaleString('es-CO'); }
+
+async function donate(){
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  if(!name||!email){ toast('Completa tu nombre y correo','error'); return; }
+  if(amount<2000){ toast('El monto mínimo es $2.000','error'); return; }
+  const btn=document.getElementById('btn'); btn.disabled=true; btn.innerHTML='<span class="inline-block w-5 h-5 border-2 border-ivory-100 border-t-transparent rounded-full spin"></span>';
+
+  // Registrar la donación (pending) y redirigir a Wompi
+  const ref='ETHNOS-DON-'+Date.now();
+  const me=await currentUser();
+  await sb.from('donations').insert({
+    user_id:me?me.id:null, donor_name:name, donor_email:email,
+    amount_cents:amount*100, currency:'COP',
+    message:document.getElementById('message').value.trim(), reference:ref, status:'pending'
+  });
+  // Aquí se integraría el checkout de Wompi (igual que MLK).
+  // Por ahora mostramos confirmación de registro.
+  toast('¡Gracias! Te llevamos al pago seguro...');
+  setTimeout(()=>{
+    // window.location = URL del checkout de Wompi con la referencia
+    alert('Integración de pago Wompi: aquí se abriría el checkout con la referencia '+ref+'.\\n\\nConfigura tus llaves de Wompi para activar el cobro real (igual que en MLK).');
+    btn.disabled=false; btn.innerHTML='<i data-lucide="heart" class="w-5 h-5"></i>Donar <span id="btnAmount">$'+amount.toLocaleString('es-CO')+'</span>';
+    lucide.createIcons();
+  }, 1200);
+}
+</script>
+</body>
+</html>

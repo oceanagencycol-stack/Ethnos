@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suscríbete a ETHNOS</title>
+<link rel="icon" href="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['Inter','sans-serif'],mono:['"Space Mono"','monospace']},colors:{terra:{400:'#C45A2E',500:'#A24B2A',600:'#83391F'},ocre:{400:'#C2933D'},ivory:{100:'#FBF8F1',200:'#F5F1EA'},ink:{900:'#1B1B1B',500:'#6B6B6B'}}}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:#FBF8F1;color:#1B1B1B}
+  .font-display{font-family:'Fraunces',serif}
+  .btn-terra{background:#A24B2A;color:#FBF8F1;font-weight:600;transition:transform .3s}.btn-terra:hover{transform:translateY(-2px)}
+  .plan{border:2px solid rgba(27,27,27,.1);border-radius:20px;padding:32px;transition:all .25s;cursor:pointer;position:relative}
+  .plan.active{border-color:#A24B2A;box-shadow:0 18px 40px -16px rgba(162,75,42,.3)}
+  .plan.active .plan-check{opacity:1}
+  .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<nav class="bg-white/95 backdrop-blur-lg border-b border-ink-900/6">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-18 py-3">
+    <a href="index.html"><img src="https://res.cloudinary.com/dpo9ohngt/image/upload/v1781898805/ChatGPT_Image_19_jun_2026_14_28_12_nxh6w4.png" class="h-11" alt="ETHNOS"></a>
+    <a href="index.html" class="text-sm text-ink-500 hover:text-terra-500 transition-colors">← Volver</a>
+  </div>
+</nav>
+
+<div class="max-w-3xl mx-auto px-6 py-14">
+  <div class="text-center mb-12">
+    <span class="font-mono text-xs uppercase tracking-[.3em] text-terra-500 font-bold">Membresía ETHNOS</span>
+    <h1 class="font-display font-light text-4xl md:text-5xl leading-tight mt-5 mb-4">Forma parte de la comunidad</h1>
+    <p class="text-ink-500 font-light text-lg">Apoya el pensamiento afrodescendiente independiente y accede a contenido y experiencias exclusivas.</p>
+  </div>
+
+  <!-- Beneficios -->
+  <div class="bg-white rounded-2xl border border-ink-900/8 p-7 mb-8">
+    <p class="font-medium mb-4">Tu membresía incluye</p>
+    <div class="grid sm:grid-cols-2 gap-3">
+      <div class="flex gap-3 items-start"><i data-lucide="check-circle" class="w-5 h-5 text-terra-500 shrink-0 mt-0.5"></i><span class="text-sm text-ink-700">Acceso a contenido premium y archivos</span></div>
+      <div class="flex gap-3 items-start"><i data-lucide="check-circle" class="w-5 h-5 text-terra-500 shrink-0 mt-0.5"></i><span class="text-sm text-ink-700">Newsletter exclusivo de la diáspora</span></div>
+      <div class="flex gap-3 items-start"><i data-lucide="check-circle" class="w-5 h-5 text-terra-500 shrink-0 mt-0.5"></i><span class="text-sm text-ink-700">Apoyas directamente a los columnistas</span></div>
+      <div class="flex gap-3 items-start"><i data-lucide="check-circle" class="w-5 h-5 text-terra-500 shrink-0 mt-0.5"></i><span class="text-sm text-ink-700">Invitaciones a eventos y conversatorios</span></div>
+    </div>
+  </div>
+
+  <!-- Planes -->
+  <div class="grid sm:grid-cols-2 gap-5 mb-8">
+    <div class="plan" id="planMensual" onclick="selPlan('mensual',15000,this)">
+      <i data-lucide="check-circle" class="plan-check absolute top-5 right-5 w-6 h-6 text-terra-500 opacity-0"></i>
+      <p class="font-mono text-xs uppercase tracking-wider text-ink-500 mb-3">Mensual</p>
+      <p class="font-display text-4xl mb-1">$15.000<span class="text-lg text-ink-500">/mes</span></p>
+      <p class="text-ink-500 text-sm mt-2">Flexible, cancela cuando quieras.</p>
+    </div>
+    <div class="plan active" id="planAnual" onclick="selPlan('anual',150000,this)">
+      <span class="absolute -top-3 left-6 bg-terra-500 text-white text-xs font-mono px-3 py-1 rounded-full">2 meses gratis</span>
+      <i data-lucide="check-circle" class="plan-check absolute top-5 right-5 w-6 h-6 text-terra-500 opacity-0"></i>
+      <p class="font-mono text-xs uppercase tracking-wider text-ink-500 mb-3">Anual</p>
+      <p class="font-display text-4xl mb-1">$150.000<span class="text-lg text-ink-500">/año</span></p>
+      <p class="text-ink-500 text-sm mt-2">Ahorra $30.000 al año.</p>
+    </div>
+  </div>
+
+  <button onclick="subscribe()" id="btn" class="btn-terra w-full py-4 rounded-xl flex items-center justify-center gap-2"><i data-lucide="star" class="w-5 h-5"></i>Suscribirme — <span id="btnPlan">$150.000/año</span></button>
+  <p class="text-center text-ink-500 text-xs mt-4 flex items-center justify-center gap-1.5"><i data-lucide="lock" class="w-3.5 h-3.5"></i>Pago seguro procesado por Wompi</p>
+  <p id="loginNote" class="hidden text-center text-ink-500 text-sm mt-5">Necesitas <a href="acceso.html" class="text-terra-500 font-semibold">iniciar sesión</a> para suscribirte.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/ethnos.js"></script>
+<script>
+lucide.createIcons();
+let plan='anual', amount=150000;
+function selPlan(p,a,el){
+  plan=p; amount=a;
+  document.querySelectorAll('.plan').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('btnPlan').textContent='$'+a.toLocaleString('es-CO')+(p==='mensual'?'/mes':'/año');
+}
+async function subscribe(){
+  const me=await currentUser();
+  if(!me){ document.getElementById('loginNote').classList.remove('hidden'); return; }
+  const btn=document.getElementById('btn'); btn.disabled=true; btn.innerHTML='<span class="inline-block w-5 h-5 border-2 border-ivory-100 border-t-transparent rounded-full spin"></span>';
+  const ref='ETHNOS-SUB-'+Date.now();
+  await sb.from('subscriptions').insert({
+    user_id:me.id, plan, amount_cents:amount*100, currency:'COP', reference:ref, status:'pending'
+  });
+  toast('¡Gracias! Te llevamos al pago seguro...');
+  setTimeout(()=>{
+    alert('Integración de pago Wompi: aquí se abriría el checkout para la suscripción '+plan+' (referencia '+ref+').\\n\\nConfigura tus llaves de Wompi para activar el cobro real.');
+    btn.disabled=false; btn.innerHTML='<i data-lucide="star" class="w-5 h-5"></i>Suscribirme — <span id="btnPlan">$'+amount.toLocaleString('es-CO')+(plan==='mensual'?'/mes':'/año')+'</span>';
+    lucide.createIcons();
+  },1200);
+}
+</script>
+</body>
+</html>
